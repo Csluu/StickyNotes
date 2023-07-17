@@ -1,0 +1,30 @@
+{
+	"name": "stickynotes",
+	"version": "1.0.0",
+	"description": "sticky note application",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"build:mac": "electron-builder --mac --x64",
+		"build:win": "electron-builder --win --x64",
+		"build:linux": "electron-builder --linux --x64"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"electron": "^25.3.0",
+		"electron-builder": "^24.4.0",
+		"prettier-plugin-tailwindcss": "^0.4.1",
+		"tailwindcss": "^3.3.3"
+	},
+	"build": {
+		"appId": "com.stickynotes",
+		"linux": {
+			"target": "AppImage",
+			"icon": "build/icon.png"
+		}
+	},
+	"dependencies": {
+		"electron-store": "^8.1.0"
+	}
+}

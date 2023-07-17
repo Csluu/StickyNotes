@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="script-src 'self' 'unsafe-inline'"
+		/>
+		<title>Kanban</title>
+		<meta name="description" content="Kanban Progress Application" />
+		<meta name="keywords" content="progress, productivity, kanban," />
+		<link rel="stylesheet" href="../css/styles.css" />
+		<script src="../js/renderer.js" defer></script>
+	</head>
+	<body id="body" class="body">
+		<main>
+			<div
+				class="flex h-[625px] w-[430px] flex-col place-items-center justify-start"
+			>
+				<div
+					class="mx-4 flex w-full flex-row place-items-start justify-center gap-6 p-4"
+				>
+					<!-- To do Container -->
+					<section class="container overflow-scroll">
+						<header class="ml-2 mt-6 flex flex-row justify-between">
+							<div
+								class="no-drag flex w-fit select-none flex-row place-items-center"
+							>
+								<div class="h-5 w-5 rounded-full bg-green-500"></div>
+								<div
+									class="rounded-lg px-2 text-xl font-semibold text-gray-500 shadow-sm outline-none"
+								>
+									Notes
+								</div>
+							</div>
+
+							<div class="no-drag flex flex-row">
+								<button id="menu-1" class="menu">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										class="opacity-50 duration-150 ease-in-out hover:scale-110 hover:opacity-100"
+									>
+										<path
+											fill="gray"
+											d="M7 12a2 2 0 1 1-4 0a2 2 0 0 1 4 0Zm7 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0Zm7 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0Z"
+										/>
+									</svg>
+								</button>
+								<!-- Drop Down Menu -->
+								<div
+									id="drop-down-1"
+									class="drop-menu no-drag hidden select-none"
+								>
+									<div class="py-2">
+										<h1 href="#" class="block px-4 text-sm text-gray-400">
+											Main Menu
+										</h1>
+									</div>
+									<ul class="text-sm text-gray-700 dark:text-gray-200">
+										<button id="lock-menu-1" class="lock-menu">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="16"
+												height="16"
+												viewBox="0 0 24 24"
+												class="opacity-50 duration-150 ease-in-out group-hover:scale-105 group-hover:opacity-100"
+											>
+												<path
+													fill="gray"
+													d="M6 22q-.825 0-1.413-.588T4 20V10q0-.825.588-1.413T6 8h1V6q0-2.075 1.463-3.538T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.588 1.413T18 22H6Zm6-5q.825 0 1.413-.588T14 15q0-.825-.588-1.413T12 13q-.825 0-1.413.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z"
+												/>
+											</svg>
+											<a
+												href="#"
+												class="py-[10px] duration-150 ease-in-out group-hover:scale-[102%]"
+												>Lock</a
+											>
+										</button>
+										<button
+											onclick="window.electron.minimizeWindow()"
+											class="no-drag group flex w-full select-none flex-row place-items-center justify-start gap-2 rounded-lg px-4 opacity-50 hover:opacity-100"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="16"
+												height="16"
+												viewBox="0 0 16 16"
+												class="opacity-50 duration-150 ease-in-out group-hover:scale-110 group-hover:opacity-100"
+											>
+												<path
+													style="fill: gray"
+													d="M 4 7 L 4 9 L 12 9 L 12 7 L 4 7 z"
+												/>
+											</svg>
+											<a
+												href="#"
+												class="py-[10px] duration-150 ease-in-out group-hover:scale-[102%]"
+												>Minimize</a
+											>
+										</button>
+										<button
+											onclick="window.electron.closeWindow()"
+											class="no-drag group flex w-full select-none flex-row place-items-center justify-start gap-2 rounded-lg px-4 opacity-50 hover:opacity-100"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="16"
+												height="16"
+												viewBox="0 0 16 16"
+												version="1.1"
+												fill="#ff0000"
+												class="opacity-50 duration-150 ease-in-out group-hover:scale-105 group-hover:opacity-100"
+											>
+												<path
+													style="fill: gray"
+													d="M 5,4 C 4.4477,4 4,4.4477 4,5 4,5.2652 4.1055,5.5195 4.293,5.707 L 10.293,11.707 C 10.48,11.895 10.735,12 11,12 11.552,12 12,11.552 12,11 12,10.735 11.895,10.48 11.707,10.293 L 5.707,4.293 C 5.5195,4.1055 5.2652,4 5,4 Z"
+												/>
+												<path
+													style="fill: gray"
+													d="M 5,12 C 4.4477,12 4,11.552 4,11 4,10.735 4.1055,10.48 4.293,10.293 L 10.293,4.293 C 10.48,4.105 10.735,4 11,4 11.552,4 12,4.448 12,5 12,5.265 11.895,5.52 11.707,5.707 L 5.707,11.707 C 5.5195,11.895 5.2652,12 5,12 Z"
+												/>
+											</svg>
+
+											<a
+												href="#"
+												class="py-[10px] duration-150 ease-in-out group-hover:scale-[102%]"
+												>Quit</a
+											>
+										</button>
+									</ul>
+								</div>
+								<form id="todo-form1">
+									<button
+										class="no-drag flex h-8 w-8 place-items-center justify-center rounded-lg"
+										type="submit"
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											class="opacity-50 duration-150 ease-in-out hover:scale-110 hover:opacity-100"
+										>
+											<path
+												fill="gray"
+												d="M18 12.998h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5v-5a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2z"
+											/>
+										</svg>
+									</button>
+								</form>
+							</div>
+						</header>
+						<span
+							class="group mx-2 mt-2 flex flex-row justify-between rounded-xl border-t-[1px] border-gray-600 bg-block-gray p-4 text-gray-200 shadow-highLight"
+						>
+							<input
+								type="text"
+								class="no-drag peer w-full px-3 opacity-50 outline-none"
+								placeholder="Search"
+							/>
+							<span
+								><svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									class="opacity-50"
+								>
+									<path
+										fill="gray"
+										d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0c.41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14z"
+									/></svg
+							></span>
+							<button
+								id="noteWindow"
+								class="no-drag w-6 rounded-full bg-black"
+							></button>
+						</span>
+						<section
+							id="todo-lane1"
+							class="swim-lane no-drag overflow-scroll rounded-xl text-base text-gray-200"
+						></section>
+					</section>
+				</div>
+			</div>
+		</main>
+	</body>
+</html>
