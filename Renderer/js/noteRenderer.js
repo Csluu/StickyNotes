@@ -13,7 +13,7 @@ window.onload = () => {
 	document.addEventListener("mousemove", (e) => {
 		if (resizing) {
 			console.log("MouseMove: ", e.clientX, e.clientY);
-			window.electronAPI.resizeWindow(e.clientX, e.clientY);
+			window.electronAPI.resizeWindow(e.clientX + 50, e.clientY +50);
 		}
 	});
 

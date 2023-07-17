@@ -5,65 +5,65 @@
 @tailwind utilities;
 
 .no-drag {
-	-webkit-app-region: no-drag;
+  -webkit-app-region: no-drag;
 }
 
 *::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 * {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-	::-webkit-scrollbar {
-		display: none;
-	}
-	@apply bg-transparent font-quicksand font-medium outline-none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  @apply bg-transparent font-quicksand font-medium outline-none;
 }
 
 @layer components {
-	.body {
-		@apply flex flex-row place-content-center justify-center;
-		-webkit-app-region: drag;
-	}
+  .body {
+    @apply flex flex-row place-content-center justify-center;
+    -webkit-app-region: drag;
+  }
 
-	.card {
-		@apply flex h-auto  w-full flex-row flex-wrap place-items-start justify-start rounded-xl border-t-[1px] border-gray-600 bg-block-gray pb-6 text-gray-200 shadow-highLight focus:outline-none;
-	}
-	.container {
-		@apply flex h-fit w-full flex-col gap-2 rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border;
-	}
-	.swim-lane {
-		@apply no-drag flex h-fit min-h-[100px] w-full flex-col gap-4 p-2;
-	}
-	.drop-menu {
-		@apply no-drag fixed z-10 mt-8 w-36 translate-x-[-55px] divide-y divide-dark-gray-highlight rounded-xl bg-opaque-dark-gray shadow-border;
-	}
-	.card-text {
-		@apply h-auto w-full px-6 outline-none;
-	}
-	.delete-button {
-		@apply w-fit place-items-center p-2 opacity-50 outline-none duration-150 ease-in-out hover:scale-105 hover:opacity-100;
-	}
-	.delete-button-container {
-		@apply flex h-6 w-full justify-end;
-	}
-	.lock-menu {
-		@apply no-drag flex w-full select-none flex-row place-items-center justify-start gap-2 rounded-lg px-4 opacity-50 hover:opacity-100;
-	}
-	.menu {
-		@apply no-drag flex h-8 w-8 place-items-center justify-center rounded-lg;
-	}
+  .card {
+    @apply flex h-auto  w-full flex-row flex-wrap place-items-start justify-start rounded-xl border-t-[1px] border-gray-600 bg-block-gray pb-6 text-gray-200 shadow-highLight focus:outline-none;
+  }
+  .container {
+    @apply flex h-fit w-full flex-col gap-2 rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border;
+  }
+  .swim-lane {
+    @apply no-drag flex h-fit min-h-[100px] w-full flex-col gap-4 p-2;
+  }
+  .drop-menu {
+    @apply no-drag fixed z-10 mt-8 w-36 translate-x-[-55px] divide-y divide-dark-gray-highlight rounded-xl bg-opaque-dark-gray shadow-border;
+  }
+  .card-text {
+    @apply h-auto w-full px-6 outline-none;
+  }
+  .delete-button {
+    @apply w-fit place-items-center p-2 opacity-50 outline-none duration-150 ease-in-out hover:scale-105 hover:opacity-100;
+  }
+  .delete-button-container {
+    @apply flex h-6 w-full justify-end;
+  }
+  .lock-menu {
+    @apply no-drag flex w-full select-none flex-row place-items-center justify-start gap-2 rounded-lg px-4 opacity-50 hover:opacity-100;
+  }
+  .menu {
+    @apply no-drag flex h-8 w-8 place-items-center justify-center rounded-lg;
+  }
 }
 
 .board {
-	width: 100%;
-	height: 100vh;
-	overflow: scroll;
+  width: 100%;
+  height: 100vh;
+  overflow: scroll;
 
-	background-image: url(https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80);
-	background-position: center;
-	background-size: cover;
+  background-image: url(https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80);
+  background-position: center;
+  background-size: cover;
 }
 
 .is-dragging {

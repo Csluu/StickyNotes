@@ -17,16 +17,17 @@
 			<div class="flex h-full w-full flex-col place-items-center justify-start">
 				<div
 					class="mx-4 flex h-full w-full flex-row place-items-start justify-center gap-6 p-4"
-				>
+				>   
 					<!-- To do Container -->
-					<section class="container relative h-full w-full overflow-scroll">
+					<section class="relative flex h-full w-full flex-col gap-2 rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border overflow-scroll bg-white">
 						<header class="ml-2 mt-6 flex flex-row justify-between">
 							<div
 								class="no-drag flex w-fit select-none flex-row place-items-center"
 							>
 								<div class="h-5 w-5 rounded-full bg-green-500"></div>
 								<div
-									class="rounded-lg px-2 text-xl font-semibold text-gray-500 shadow-sm outline-none"
+								contenteditable="true"
+									class="rounded-lg px-2 text-xl font-semibold text-gray-500 outline-none"
 								>
 									Notes
 								</div>
@@ -152,7 +153,7 @@
 								</form>
 							</div>
 						</header>
-						<section>hello</section>
+						<section contenteditable="true" class="no-drag text-gray-200">hello</section>
 						<div
 							id="resizeDiv"
 							class="no-drag absolute bottom-8 right-8 h-5 w-5 cursor-se-resize"
@@ -162,6 +163,7 @@
 								width="20"
 								height="20"
 								viewBox="0 0 16 16"
+								class="opacity-50"
 							>
 								<path
 									fill="gray"
