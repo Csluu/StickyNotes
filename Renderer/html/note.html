@@ -17,16 +17,23 @@
 			<div class="flex h-full w-full flex-col place-items-center justify-start">
 				<div
 					class="mx-4 flex h-full w-full flex-row place-items-start justify-center gap-6 p-4"
-				>   
+				>
 					<!-- To do Container -->
-					<section class="relative flex h-full w-full flex-col gap-2 rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border overflow-scroll bg-white">
+					<section
+						class="relative flex h-full w-full flex-col gap-2 overflow-scroll rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border"
+					>
 						<header class="ml-2 mt-6 flex flex-row justify-between">
 							<div
 								class="no-drag flex w-fit select-none flex-row place-items-center"
 							>
-								<div class="h-5 w-5 rounded-full bg-green-500"></div>
 								<div
-								contenteditable="true"
+									id="noteColor"
+									class="h-5 w-5 rounded-full bg-green-500"
+								></div>
+								<div
+									id="noteTitle"
+									data-id="uniqueNoteId1"
+									contenteditable="true"
 									class="rounded-lg px-2 text-xl font-semibold text-gray-500 outline-none"
 								>
 									Notes
@@ -133,8 +140,8 @@
 								</div>
 								<form id="todo-form1">
 									<button
+										id="noteWindow"
 										class="no-drag flex h-8 w-8 place-items-center justify-center rounded-lg"
-										type="submit"
 									>
 										<svg
 											class="openNote"
@@ -153,7 +160,14 @@
 								</form>
 							</div>
 						</header>
-						<section contenteditable="true" class="no-drag text-gray-200">hello</section>
+						<section
+							id="noteText"
+							data-id="uniqueNoteId1"
+							contenteditable="true"
+							class="no-drag px-2 text-gray-200"
+						>
+							hello
+						</section>
 						<div
 							id="resizeDiv"
 							class="no-drag absolute bottom-8 right-8 h-5 w-5 cursor-se-resize"

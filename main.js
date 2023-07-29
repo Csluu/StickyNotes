@@ -7,7 +7,7 @@ const Store = require("electron-store");
 const currentWindow = require("electron").BrowserWindow.getFocusedWindow();
 const path = require("path");
 
-process.env.NODE_ENV = "production";
+process.env.NODE_ENV = "dev";
 
 const isDev = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
@@ -129,7 +129,7 @@ ipcMain.on("create-new-window", () => {
 ipcMain.on("resize-window", (event, width, height) => {
 	const window = BrowserWindow.getFocusedWindow();
 	if (window) {
-		window.setMinimumSize(425, 300);
+		window.setMinimumSize(425, 250);
 		window.setSize(width, height);
 	}
 });

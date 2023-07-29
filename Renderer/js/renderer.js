@@ -71,6 +71,11 @@ function createNotesCard(lane, cardText, prepend = false) {
 </svg>
 `;
 	deleteButtonContainer.appendChild(deleteButton);
+	// const newTitle = document.createElement("h1");
+	// newTitle.classList.add("card-title");
+	// newTitle.classList.add("contenteditable", "true");
+	// newTitle.innerText = cardTitle;
+	// newTask.appendChild(newTitle);
 
 	const newParagraph = document.createElement("p");
 	newParagraph.classList.add("card-text");
@@ -116,4 +121,42 @@ toggleLock();
 // renderer.js
 document.getElementById("noteWindow").addEventListener("click", () => {
 	window.electron.newWindow();
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+	const noteCardsContainer = document.querySelector("#noteCardsContainer");
+
+	// Loop over all items in local storage
+	for (let i = 0; i < localStorage.length; i++) {
+		const key = localStorage.key(i);
+
+		// Check if the key starts with "note-"
+		if (key.startsWith("note-")) {
+			// Parse the note data from local storage
+			const noteData = JSON.parse(localStorage.getItem(key));
+
+			// Create a new div for the note card
+			const noteCard = document.createElement("div");
+			noteCard.className = "note-card";
+
+			// Add the title to the note card
+			const noteTitle = document.createElement("h2");
+			noteTitle.innerText = noteData.title;
+			noteCard.appendChild(noteTitle);
+
+			// Add the date to the note card
+			const noteDate = document.createElement("p");
+			noteDate.innerText = "Last modified: " + noteData.lastModified;
+			noteCard.appendChild(noteDate);
+
+			// Add some text to the note card
+			const noteText = document.createElement("p");
+			// Show only first 100 characters or less
+			noteText.innerText = noteData.text.substring(0, 100) + "...";
+			noteCard.appendChild(noteText);
+
+			// Append the note card to the container
+			noteCardsContainer.appendChild(noteCard);
+		}
+	}
 });

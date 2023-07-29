@@ -132,10 +132,11 @@
 										</button>
 									</ul>
 								</div>
+
 								<form id="todo-form1">
 									<button
+										id="noteWindow"
 										class="no-drag flex h-8 w-8 place-items-center justify-center rounded-lg"
-										type="submit"
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -156,11 +157,6 @@
 						<span
 							class="group mx-2 mt-2 flex flex-row justify-between rounded-xl border-t-[1px] border-gray-600 bg-block-gray p-4 text-gray-200 shadow-highLight"
 						>
-							<input
-								type="text"
-								class="no-drag peer w-full px-3 opacity-50 outline-none"
-								placeholder="Search"
-							/>
 							<span
 								><svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -174,13 +170,103 @@
 										d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0c.41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14z"
 									/></svg
 							></span>
-							<button
-								id="noteWindow"
-								class="no-drag w-6 rounded-full bg-black"
-							></button>
+							<input
+								type="text"
+								class="no-drag peer w-full px-2 outline-none"
+								placeholder="Search"
+							/>
 						</span>
-						<section
+						<span
+							class="g-2 group mx-2 mt-2 flex flex-col justify-between gap-2 rounded-xl border-t-[1px] border-gray-600 bg-block-gray p-4 text-gray-200 shadow-highLight"
+						>
+							<div
+								class="no-drag peer flex w-full flex-row justify-between px-3 outline-none"
+							>
+								<h1 class="flex flex-row place-items-center gap-2">
+									<div class="h-3 w-3 rounded-full bg-green-500"></div>
+									Food Recipes
+								</h1>
+								<p class="text-gray-500">6/20/2023</p>
+							</div>
+							<div
+								type="text"
+								class="no-drag peer w-full px-3 text-gray-500 outline-none"
+								placeholder="Search"
+							>
+								Musubi, Tempura, Shrimp
+							</div>
+							<span></span>
+						</span>
+						<span
+							class="g-2 group mx-2 mt-2 flex flex-col justify-between gap-2 rounded-xl border-t-[1px] border-gray-600 bg-block-gray p-4 text-gray-200 shadow-highLight"
+						>
+							<div
+								class="no-drag peer flex w-full flex-row justify-between px-3 outline-none"
+							>
+								<h1 class="flex flex-row place-items-center gap-2">
+									<div class="h-3 w-3 rounded-full bg-pink-500"></div>
+									Dating Locations
+								</h1>
+								<p class="text-gray-500">6/20/2023</p>
+							</div>
+							<div
+								type="text"
+								class="no-drag peer w-full px-3 text-gray-500 outline-none"
+								placeholder="Search"
+							>
+								Cat Cafe, Bubble Tea
+							</div>
+							<span></span>
+						</span>
+						<span
+							class="g-2 group mx-2 mt-2 flex flex-col justify-between gap-2 rounded-xl border-t-[1px] border-gray-600 bg-block-gray p-4 text-gray-200 shadow-highLight"
+						>
+							<div
+								class="no-drag peer flex w-full flex-row justify-between px-3 outline-none"
+							>
+								<h1 class="flex flex-row place-items-center gap-2">
+									<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
+									Programming
+								</h1>
+								<p class="text-gray-500">6/20/2023</p>
+							</div>
+							<div
+								type="text"
+								class="no-drag peer w-full px-3 text-gray-500 outline-none"
+								placeholder="Search"
+							>
+								Tailwind CSS, Prisma, CSS
+							</div>
+							<span></span>
+						</span>
+						<span
+							class="g-2 group mx-2 mt-2 flex flex-col justify-between gap-2 rounded-xl border-t-[1px] border-gray-600 bg-block-gray p-4 text-gray-200 shadow-highLight"
+						>
+							<div
+								class="no-drag peer flex w-full flex-row justify-between px-3 outline-none"
+							>
+								<h1 class="flex flex-row place-items-center gap-2">
+									<div class="h-3 w-3 rounded-full bg-blue-500"></div>
+									Best Discord Group
+								</h1>
+								<p class="text-gray-500">6/20/2023</p>
+							</div>
+							<div
+								type="text"
+								class="no-drag peer w-full px-3 text-gray-500 outline-none"
+								placeholder="Search"
+							>
+								The boys
+							</div>
+							<span></span>
+						</span>
+
+						<!-- <section
 							id="todo-lane1"
+							class="swim-lane no-drag overflow-scroll rounded-xl text-base text-gray-200"
+						></section> -->
+						<section
+							id="noteCardsContainer"
 							class="swim-lane no-drag overflow-scroll rounded-xl text-base text-gray-200"
 						></section>
 					</section>
