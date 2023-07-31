@@ -38,8 +38,7 @@ function updateNotes() {
 
 		// Create a new div for the note card
 		const noteCard = document.createElement("div");
-		noteCard.setAttribute("data-id", i);
-		console.log(i);
+		noteCard.setAttribute("data-id", noteData.id);
 		noteCard.classList.add(
 			"card",
 			"gap-2",
@@ -145,10 +144,17 @@ function bindEventListeners(notes) {
 		element.addEventListener("click", openNoteWindow);
 
 		function openNoteWindow() {
-			const noteId = parseInt(element.getAttribute("data-id")); // Get the id of the note
-			const note = notes[noteId];
-			// Pass the corresponding note data and id to the newWindow function
-			window.electron.newWindow(note, noteId);
+			const noteId = element.getAttribute("data-id"); // Get the id of the note
+			const note = notes.find((note) => note.id === noteId); // Find the note with the matching id
+
+			if (note) {
+				// Check if note was found
+				console.log(note);
+				// Pass the corresponding note data and id to the newWindow function
+				window.electron.newWindow(note);
+			} else {
+				console.log(`Note with id ${noteId} not found.`);
+			}
 		}
 	});
 }

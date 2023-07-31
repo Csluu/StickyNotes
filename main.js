@@ -102,7 +102,7 @@ ipcMain.on("minimize-window", () => {
 });
 
 // 675
-ipcMain.on("create-new-window", (event, note, noteId) => {
+ipcMain.on("create-new-window", (event, note) => {
 	console.log("Received 'create-new-window' event with note:", note);
 	const newWindow = new BrowserWindow({
 		width: isDev ? 1500 : 425,
@@ -126,8 +126,8 @@ ipcMain.on("create-new-window", (event, note, noteId) => {
 
 	// Send note data and id to new window
 	newWindow.webContents.on("did-finish-load", () => {
-		console.log("new window did finish load, sending note data", note, noteId); // Add this line
-		newWindow.webContents.send("note-data", note, noteId);
+		console.log("new window did finish load, sending note data", note); // Add this line
+		newWindow.webContents.send("note-data", note);
 	});
 
 	// Open the DevTools for newWindow
@@ -141,17 +141,3 @@ ipcMain.on("resize-window", (event, width, height) => {
 		window.setSize(width, height);
 	}
 });
-
-// ipcMain.on("update-note", (event, updatedNote, noteId) => {
-// 	console.log("Received 'update-note' event with updated note:", updatedNote);
-
-// 	// Your logic to update the note goes here
-// 	// You might need to fetch the original note array, find the note by its id,
-// 	// replace it with the updated note, and save it back to local storage
-// 	let notes = JSON.parse(localStorage.getItem("notes")) || [];
-// 	const noteIndex = notes.findIndex((note) => note.id === noteId);
-// 	if (noteIndex !== -1) {
-// 		notes[noteIndex] = updatedNote;
-// 		localStorage.setItem("notes", JSON.stringify(notes));
-// 	}
-// });

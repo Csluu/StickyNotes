@@ -1,75 +1,23 @@
-// window.addEventListener("DOMContentLoaded", () => {
-// 	// Retrieve all noteTitles and noteTexts
-// 	const noteTitles = document.querySelectorAll("#noteTitle");
-// 	const noteTexts = document.querySelectorAll("#noteText");
-
-// 	// Load all notes from local storage
-// 	let notes = JSON.parse(localStorage.getItem("notes")) || [];
-
-// 	noteTitles.forEach((noteTitle, index) => {
-// 		// Generate a unique ID for the note
-// 		let id = noteTitle.dataset.id || Date.now().toString();
-
-// 		// Attach the ID to the note element
-// 		noteTitle.dataset.id = id;
-
-// 		// Load data from the notes array
-// 		let noteData = notes.find((note) => note.id === id) || {};
-// 		noteTitle.innerText = noteData.title || "Notes";
-
-// 		noteTitle.addEventListener("input", (event) => {
-// 			// Save data to the notes array
-// 			noteData.title = event.target.innerText || "Notes"; // Use default title if input is empty
-// 			noteData.id = id;
-// 			noteData.lastModified = getFormattedDate();
-// 			notes = notes.filter((note) => note.id !== id); // Remove the old version of the note
-// 			notes.push(noteData); // Push the updated version of the note
-
-// 			// Save all notes to local storage
-// 			localStorage.setItem("notes", JSON.stringify(notes));
-// 		});
-
-// 		const noteText = noteTexts[index];
-// 		noteText.innerText = noteData.text || "";
-
-// 		noteText.addEventListener("input", (event) => {
-// 			// Save data to the notes array
-// 			noteData.text = event.target.innerText;
-// 			noteData.id = id;
-// 			noteData.lastModified = getFormattedDate();
-// 			if (!noteData.title) noteData.title = "Notes"; // Add default title if it's not there
-// 			notes = notes.filter((note) => note.id !== id); // Remove the old version of the note
-// 			notes.push(noteData); // Push the updated version of the note
-
-// 			// Save all notes to local storage
-// 			localStorage.setItem("notes", JSON.stringify(notes));
-// 		});
-// 	});
-// });
-
-// // Retrieve noteTitle and noteText
-// const noteTitle = document.querySelector("#noteTitle");
-// const noteText = document.querySelector("#noteText");
-
-// // Load all notes from local storage
-//
-
 // Fetch the note passed to this window
-window.electron.on("note-data", (note, noteId) => {
+window.electron.on("note-data", (note) => {
+	if (!note.id) {
+		note.id = generateUUID();
+	}
+
 	const noteTitle = document.querySelector("#noteTitle");
 	const noteText = document.querySelector("#noteText");
 	let notes = JSON.parse(localStorage.getItem("notes")) || [];
 	console.log(note);
 	// Display the note
 	console.log(note.text);
-	console.log(noteId);
+
 	noteTitle.innerHTML = note.title;
 	noteText.innerHTML = note.text;
 
 	noteTitle.addEventListener("input", (event) => {
 		// Save data to the notes array
 		note.title = event.target.innerText || "Notes"; // Use default title if input is empty
-		note.id = noteId;
+		noteId = note.id;
 		note.lastModified = getFormattedDate();
 		notes = notes.filter((note) => note.id !== noteId); // Remove the old version of the note
 		notes.push(note); // Push the updated version of the note
@@ -81,6 +29,7 @@ window.electron.on("note-data", (note, noteId) => {
 	noteText.addEventListener("input", (event) => {
 		// Save data to the notes array
 		note.text = event.target.innerText;
+		noteId = note.id;
 		note.lastModified = getFormattedDate();
 		if (!note.title) noteData.title = "Notes"; // Add default title if it's not there
 		notes = notes.filter((note) => note.id !== noteId); // Remove the old version of the note
@@ -91,6 +40,15 @@ window.electron.on("note-data", (note, noteId) => {
 		localStorage.setItem("notes", JSON.stringify(notes));
 	});
 });
+
+// A simple function to generate UUIDs.
+function generateUUID() {
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+		var r = (Math.random() * 16) | 0,
+			v = c == "x" ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
+}
 
 // Function to get last modification time of a note
 function getLastModifiedTime(id) {
