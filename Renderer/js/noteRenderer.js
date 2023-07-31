@@ -1,58 +1,113 @@
-// noteText
-// noteTitle
-// noteColor
+// window.addEventListener("DOMContentLoaded", () => {
+// 	// Retrieve all noteTitles and noteTexts
+// 	const noteTitles = document.querySelectorAll("#noteTitle");
+// 	const noteTexts = document.querySelectorAll("#noteText");
 
-window.addEventListener("DOMContentLoaded", () => {
-	// Retrieve all noteTitles and noteTexts
-	const noteTitles = document.querySelectorAll("#noteTitle");
-	const noteTexts = document.querySelectorAll("#noteText");
+// 	// Load all notes from local storage
+// 	let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
-	noteTitles.forEach((noteTitle, index) => {
-		const id = noteTitle.dataset.id;
+// 	noteTitles.forEach((noteTitle, index) => {
+// 		// Generate a unique ID for the note
+// 		let id = noteTitle.dataset.id || Date.now().toString();
 
-		// Load data from local storage
-		const noteData = JSON.parse(localStorage.getItem(`note-${id}`)) || {
-			id: id,
-		};
-		noteTitle.innerText = noteData.title || "";
+// 		// Attach the ID to the note element
+// 		noteTitle.dataset.id = id;
 
-		noteTitle.addEventListener("input", (event) => {
-			// Save data to local storage
-			noteData.title = event.target.innerText;
-			noteData.lastModified = getFormattedDate();
-			localStorage.setItem(`note-${id}`, JSON.stringify(noteData));
-		});
+// 		// Load data from the notes array
+// 		let noteData = notes.find((note) => note.id === id) || {};
+// 		noteTitle.innerText = noteData.title || "Notes";
 
-		const noteText = noteTexts[index];
-		noteText.innerText = noteData.text || "";
+// 		noteTitle.addEventListener("input", (event) => {
+// 			// Save data to the notes array
+// 			noteData.title = event.target.innerText || "Notes"; // Use default title if input is empty
+// 			noteData.id = id;
+// 			noteData.lastModified = getFormattedDate();
+// 			notes = notes.filter((note) => note.id !== id); // Remove the old version of the note
+// 			notes.push(noteData); // Push the updated version of the note
 
-		noteText.addEventListener("input", (event) => {
-			// Save data to local storage
-			noteData.text = event.target.innerText;
-			noteData.lastModified = getFormattedDate();
-			localStorage.setItem(`note-${id}`, JSON.stringify(noteData));
-		});
+// 			// Save all notes to local storage
+// 			localStorage.setItem("notes", JSON.stringify(notes));
+// 		});
+
+// 		const noteText = noteTexts[index];
+// 		noteText.innerText = noteData.text || "";
+
+// 		noteText.addEventListener("input", (event) => {
+// 			// Save data to the notes array
+// 			noteData.text = event.target.innerText;
+// 			noteData.id = id;
+// 			noteData.lastModified = getFormattedDate();
+// 			if (!noteData.title) noteData.title = "Notes"; // Add default title if it's not there
+// 			notes = notes.filter((note) => note.id !== id); // Remove the old version of the note
+// 			notes.push(noteData); // Push the updated version of the note
+
+// 			// Save all notes to local storage
+// 			localStorage.setItem("notes", JSON.stringify(notes));
+// 		});
+// 	});
+// });
+
+// // Retrieve noteTitle and noteText
+// const noteTitle = document.querySelector("#noteTitle");
+// const noteText = document.querySelector("#noteText");
+
+// // Load all notes from local storage
+//
+
+// Fetch the note passed to this window
+window.electron.on("note-data", (note, noteId) => {
+	const noteTitle = document.querySelector("#noteTitle");
+	const noteText = document.querySelector("#noteText");
+	let notes = JSON.parse(localStorage.getItem("notes")) || [];
+	console.log(note);
+	// Display the note
+	console.log(note.text);
+	console.log(noteId);
+	noteTitle.innerHTML = note.title;
+	noteText.innerHTML = note.text;
+
+	noteTitle.addEventListener("input", (event) => {
+		// Save data to the notes array
+		note.title = event.target.innerText || "Notes"; // Use default title if input is empty
+		note.id = noteId;
+		note.lastModified = getFormattedDate();
+		notes = notes.filter((note) => note.id !== noteId); // Remove the old version of the note
+		notes.push(note); // Push the updated version of the note
+
+		// Save all notes to local storage
+		localStorage.setItem("notes", JSON.stringify(notes));
+	});
+
+	noteText.addEventListener("input", (event) => {
+		// Save data to the notes array
+		note.text = event.target.innerText;
+		note.lastModified = getFormattedDate();
+		if (!note.title) noteData.title = "Notes"; // Add default title if it's not there
+		notes = notes.filter((note) => note.id !== noteId); // Remove the old version of the note
+
+		notes.push(note); // Push the updated version of the note
+
+		// Save all notes to local storage
+		localStorage.setItem("notes", JSON.stringify(notes));
 	});
 });
 
 // Function to get last modification time of a note
-function getLastModifiedTime(noteId) {
-	const noteData = JSON.parse(localStorage.getItem(`note-${noteId}`));
-	if (noteData && noteData.lastModified) {
-		return noteData.lastModified;
+function getLastModifiedTime(id) {
+	const notes = JSON.parse(localStorage.getItem("notes"));
+	const note = notes.find((note) => note.id === id);
+	if (note && note.lastModified) {
+		return note.lastModified;
 	} else {
 		return null;
 	}
 }
 
-// Function to get current date in month/day/year format
+// Function to get current date in Month day, year format
 function getFormattedDate() {
 	const date = new Date();
-	const month = String(date.getMonth() + 1).padStart(2, "0");
-	const day = String(date.getDate()).padStart(2, "0");
-	const year = date.getFullYear();
-
-	return `${month}/${day}/${year}`;
+	const options = { year: "numeric", month: "long", day: "numeric" };
+	return date.toLocaleDateString("en-US", options);
 }
 
 // Usage:
@@ -104,7 +159,9 @@ function toggleLock() {
 	});
 }
 toggleLock();
-
-document.getElementById("noteWindow").addEventListener("click", () => {
+// Attach an event listener to the new note button
+const newNoteButton = document.querySelector(".newNoteButton");
+newNoteButton.addEventListener("click", () => {
+	console.log("added");
 	window.electron.newWindow();
 });

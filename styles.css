@@ -40,7 +40,7 @@
 		@apply no-drag fixed z-10 mt-8 w-36 translate-x-[-55px] divide-y divide-dark-gray-highlight rounded-xl bg-opaque-dark-gray shadow-border;
 	}
 	.card-text {
-		@apply h-auto w-full px-6 outline-none;
+		@apply h-auto w-full px-5 outline-none;
 	}
 	.delete-button {
 		@apply w-fit place-items-center p-2 opacity-50 outline-none duration-150 ease-in-out hover:scale-105 hover:opacity-100;
@@ -55,7 +55,7 @@
 		@apply no-drag flex h-8 w-8 place-items-center justify-center rounded-lg;
 	}
 	.card-title {
-		@apply h-auto w-full px-6 font-semibold outline-none;
+		@apply h-auto w-full font-semibold outline-none;
 	}
 }
 

@@ -133,25 +133,22 @@
 									</ul>
 								</div>
 
-								<form id="todo-form1">
-									<button
-										id="noteWindow"
-										class="no-drag flex h-8 w-8 place-items-center justify-center rounded-lg"
+								<button
+									class="no-drag newNoteButton flex h-8 w-8 place-items-center justify-center rounded-lg"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										class="opacity-50 duration-150 ease-in-out hover:scale-110 hover:opacity-100"
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="24"
-											height="24"
-											viewBox="0 0 24 24"
-											class="opacity-50 duration-150 ease-in-out hover:scale-110 hover:opacity-100"
-										>
-											<path
-												fill="gray"
-												d="M18 12.998h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5v-5a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2z"
-											/>
-										</svg>
-									</button>
-								</form>
+										<path
+											fill="gray"
+											d="M18 12.998h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5v-5a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2z"
+										/>
+									</svg>
+								</button>
 							</div>
 						</header>
 						<span
@@ -176,7 +173,7 @@
 								placeholder="Search"
 							/>
 						</span>
-						<span
+						<!-- <span
 							class="g-2 group mx-2 mt-2 flex flex-col justify-between gap-2 rounded-xl border-t-[1px] border-gray-600 bg-block-gray p-4 text-gray-200 shadow-highLight"
 						>
 							<div
@@ -228,7 +225,7 @@
 									<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
 									Programming
 								</h1>
-								<p class="text-gray-500">6/20/2023</p>
+								<p class="text-gray-500">Sept 9, 23</p>
 							</div>
 							<div
 								type="text"
@@ -249,22 +246,19 @@
 									<div class="h-3 w-3 rounded-full bg-blue-500"></div>
 									Best Discord Group
 								</h1>
-								<p class="text-gray-500">6/20/2023</p>
 							</div>
 							<div
 								type="text"
-								class="no-drag peer w-full px-3 text-gray-500 outline-none"
+								class="no-drag peer flex w-full flex-row justify-between px-3 text-gray-500 outline-none"
 								placeholder="Search"
 							>
-								The boys
+								<p>The boys</p>
+								<p class="text-gray-500">Nov 9 2023</p>
 							</div>
-							<span></span>
-						</span>
 
-						<!-- <section
-							id="todo-lane1"
-							class="swim-lane no-drag overflow-scroll rounded-xl text-base text-gray-200"
-						></section> -->
+							<span></span>
+						</span> -->
+
 						<section
 							id="noteCardsContainer"
 							class="swim-lane no-drag overflow-scroll rounded-xl text-base text-gray-200"
