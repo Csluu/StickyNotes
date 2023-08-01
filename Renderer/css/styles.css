@@ -729,14 +729,6 @@ video {
   -webkit-app-region: no-drag;
 }
 
-.card-title{
-  height: auto;
-  width: 100%;
-  font-weight: 600;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
 .absolute{
   position: absolute;
 }
@@ -811,6 +803,23 @@ video {
   height: 100vh;
 }
 
+.h-32{
+  height: 8rem;
+}
+
+.h-max{
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.max-h-\[\]{
+  max-height: ;
+}
+
+.max-h-\[625px\]{
+  max-height: 625px;
+}
+
 .w-3{
   width: 0.75rem;
 }
@@ -836,12 +845,12 @@ video {
   width: 100%;
 }
 
-.cursor-se-resize{
-  cursor: se-resize;
-}
-
 .cursor-pointer{
   cursor: pointer;
+}
+
+.cursor-se-resize{
+  cursor: se-resize;
 }
 
 .select-none{
@@ -856,10 +865,6 @@ video {
 
 .flex-col{
   flex-direction: column;
-}
-
-.flex-wrap{
-  flex-wrap: wrap;
 }
 
 .place-items-start{
@@ -1017,6 +1022,10 @@ video {
 
 .font-semibold{
   font-weight: 600;
+}
+
+.lowercase{
+  text-transform: lowercase;
 }
 
 .text-gray-200{

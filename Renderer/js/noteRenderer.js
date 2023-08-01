@@ -1,9 +1,7 @@
+const deleteButton = document.querySelector("#deleteButton");
+
 // Fetch the note passed to this window
 window.electron.on("note-data", (note) => {
-	if (!note.id) {
-		note.id = generateUUID();
-	}
-
 	const noteTitle = document.querySelector("#noteTitle");
 	const noteText = document.querySelector("#noteText");
 	let notes = JSON.parse(localStorage.getItem("notes")) || [];
@@ -39,16 +37,21 @@ window.electron.on("note-data", (note) => {
 		// Save all notes to local storage
 		localStorage.setItem("notes", JSON.stringify(notes));
 	});
-});
 
-// A simple function to generate UUIDs.
-function generateUUID() {
-	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-		var r = (Math.random() * 16) | 0,
-			v = c == "x" ? r : (r & 0x3) | 0x8;
-		return v.toString(16);
+	deleteButton.addEventListener("click", () => {
+		const notes = JSON.parse(localStorage.getItem("notes")) || [];
+		const noteId = note.id; // assuming 'note' is the current note
+
+		// Remove the note with the provided id
+		const updatedNotes = notes.filter((note) => note.id !== noteId);
+
+		// Update local storage
+		localStorage.setItem("notes", JSON.stringify(updatedNotes));
+
+		// You may also want to close the window or navigate away after deleting the note
+		window.electron.closeWindow();
 	});
-}
+});
 
 // Function to get last modification time of a note
 function getLastModifiedTime(id) {
@@ -61,11 +64,32 @@ function getLastModifiedTime(id) {
 	}
 }
 
-// Function to get current date in Month day, year format
+function generateRandomId() {
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+		var r = (Math.random() * 16) | 0,
+			v = c == "x" ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
+}
+
+// Function to get current date in Year/Month/Day format
 function getFormattedDate() {
 	const date = new Date();
-	const options = { year: "numeric", month: "long", day: "numeric" };
-	return date.toLocaleDateString("en-US", options);
+	const year = date.getFullYear();
+	let month = date.getMonth() + 1; // Months are zero-based
+	let day = date.getDate();
+	let hours = date.getHours();
+	let minutes = date.getMinutes();
+	let seconds = date.getSeconds();
+
+	// Pad month, day, hours, minutes and seconds with leading zeros if necessary
+	month = month < 10 ? "0" + month : month;
+	day = day < 10 ? "0" + day : day;
+	hours = hours < 10 ? "0" + hours : hours;
+	minutes = minutes < 10 ? "0" + minutes : minutes;
+	seconds = seconds < 10 ? "0" + seconds : seconds;
+
+	return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
 }
 
 // Usage:
@@ -117,9 +141,16 @@ function toggleLock() {
 	});
 }
 toggleLock();
+
 // Attach an event listener to the new note button
 const newNoteButton = document.querySelector(".newNoteButton");
 newNoteButton.addEventListener("click", () => {
 	console.log("added");
-	window.electron.newWindow();
+	note = {
+		id: generateRandomId(),
+		title: "Note",
+		text: "",
+		lastModified: getFormattedDate(),
+	};
+	window.electron.newWindow(note);
 });

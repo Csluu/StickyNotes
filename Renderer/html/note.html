@@ -65,13 +65,13 @@
 										</h1>
 									</div>
 									<ul class="text-sm text-gray-700 dark:text-gray-200">
-										<button id="lock-menu-1" class="lock-menu">
+										<button id="lock-menu-1" class="lock-menu group">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
 												width="16"
 												height="16"
 												viewBox="0 0 24 24"
-												class="opacity-50 duration-150 ease-in-out group-hover:scale-105 group-hover:opacity-100"
+												class="duration-150 ease-in-out group-hover:scale-105 group-hover:opacity-100"
 											>
 												<path
 													fill="gray"
@@ -82,6 +82,28 @@
 												href="#"
 												class="py-[10px] duration-150 ease-in-out group-hover:scale-[102%]"
 												>Lock</a
+											>
+										</button>
+										<button
+											id="deleteButton"
+											class="no-drag group flex w-full select-none flex-row place-items-center justify-start gap-2 rounded-lg px-4 opacity-50 hover:opacity-100"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="16"
+												height="16"
+												viewBox="0 0 24 24"
+												class="opacity-50 duration-150 ease-in-out group-hover:scale-105 group-hover:opacity-100"
+											>
+												<path
+													fill="gray"
+													d="m9.4 16.5l2.6-2.6l2.6 2.6l1.4-1.4l-2.6-2.6L16 9.9l-1.4-1.4l-2.6 2.6l-2.6-2.6L8 9.9l2.6 2.6L8 15.1l1.4 1.4ZM7 21q-.825 0-1.413-.588T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.588 1.413T17 21H7Z"
+												/>
+											</svg>
+											<a
+												href="#"
+												class="py-[10px] duration-150 ease-in-out group-hover:scale-[102%]"
+												>Delete</a
 											>
 										</button>
 										<button
@@ -106,6 +128,7 @@
 												>Minimize</a
 											>
 										</button>
+
 										<button
 											onclick="window.electron.closeWindow()"
 											class="no-drag group flex w-full select-none flex-row place-items-center justify-start gap-2 rounded-lg px-4 opacity-50 hover:opacity-100"

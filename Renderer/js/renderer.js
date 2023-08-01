@@ -2,6 +2,9 @@ const draggables = document.querySelectorAll(".card");
 const droppables = document.querySelectorAll(".swim-lane");
 const form1 = document.getElementById("todo-form1");
 const todoLane1 = document.getElementById("todo-lane1");
+const searchBarInput = document
+	.querySelector('input[type="text"]')
+	.value.toLowerCase();
 
 function toggleDropDown(dropDown, menu) {
 	menu.addEventListener("click", () => {
@@ -32,9 +35,30 @@ function updateNotes() {
 	// Load all notes from local storage
 	const notes = JSON.parse(localStorage.getItem("notes")) || [];
 
+	// Sort the notes by date
+	notes.sort((a, b) => b.lastModified.localeCompare(a.lastModified));
+
+	// Get the search input from the search bar
+	const searchBarInput = document
+		.querySelector('input[type="text"]')
+		.value.toLowerCase();
+
 	// Loop over all notes
 	for (let i = 0; i < notes.length; i++) {
 		const noteData = notes[i];
+
+		// Convert the title and text to lowercase for case insensitive search
+		const titleLowerCase = noteData.title.toLowerCase();
+		const textLowerCase = noteData.text.toLowerCase();
+
+		// Check if the note's title or text includes the search input
+		// If it does not, skip to the next iteration of the loop
+		if (
+			!titleLowerCase.includes(searchBarInput) &&
+			!textLowerCase.includes(searchBarInput)
+		) {
+			continue;
+		}
 
 		// Create a new div for the note card
 		const noteCard = document.createElement("div");
@@ -109,7 +133,7 @@ function updateNotes() {
 		// Add the date to the header
 		const noteDate = document.createElement("p");
 		noteDate.classList.add("text-gray-500");
-		noteDate.innerText = noteData.lastModified;
+		noteDate.innerText = formatDate(noteData.lastModified);
 		noteHeader.appendChild(noteDate);
 
 		// adding the header (title and date) to the noteCard
@@ -174,5 +198,45 @@ window.addEventListener("DOMContentLoaded", () => {
 const newNoteButton = document.querySelector(".newNoteButton");
 newNoteButton.addEventListener("click", () => {
 	console.log("added");
-	window.electron.newWindow();
+	note = {
+		id: generateRandomId(),
+		title: "Note",
+		text: "",
+		lastModified: getFormattedDate(),
+	};
+	window.electron.newWindow(note);
 });
+
+// Function to get current date in Year/Month/Day format
+function getFormattedDate() {
+	const date = new Date();
+	const year = date.getFullYear();
+	let month = date.getMonth() + 1; // Months are zero-based
+	let day = date.getDate();
+	let hours = date.getHours();
+	let minutes = date.getMinutes();
+	let seconds = date.getSeconds();
+
+	// Pad month, day, hours, minutes and seconds with leading zeros if necessary
+	month = month < 10 ? "0" + month : month;
+	day = day < 10 ? "0" + day : day;
+	hours = hours < 10 ? "0" + hours : hours;
+	minutes = minutes < 10 ? "0" + minutes : minutes;
+	seconds = seconds < 10 ? "0" + seconds : seconds;
+
+	return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+}
+
+function generateRandomId() {
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+		var r = (Math.random() * 16) | 0,
+			v = c == "x" ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
+}
+
+function formatDate(isoDateString) {
+	const date = new Date();
+	const options = { year: "numeric", month: "long", day: "numeric" };
+	return date.toLocaleDateString("en-US", options);
+}
