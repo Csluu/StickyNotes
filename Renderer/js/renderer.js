@@ -43,6 +43,16 @@ function updateNotes() {
 		.querySelector('input[type="text"]')
 		.value.toLowerCase();
 
+	// Define an array with your color classes
+	const colors = [
+		"bg-pink-500",
+		"bg-blue-500",
+		"bg-red-500",
+		"bg-green-500",
+		"bg-orange-500",
+		"bg-yellow-500",
+	];
+
 	// Loop over all notes
 	for (let i = 0; i < notes.length; i++) {
 		const noteData = notes[i];
@@ -119,15 +129,25 @@ function updateNotes() {
 			"place-items-center"
 		);
 
+		// Pick a random color from the array
+		const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
 		const noteCircle = document.createElement("span");
-		noteCircle.classList.add("bg-pink-500", "w-3", "h-3", "rounded-full");
+		noteCircle.classList.add(randomColor, "w-3", "h-3", "rounded-full");
 		noteTitle.appendChild(noteCircle);
 
 		// Add the title to header
 		const noteTitleText = document.createElement("p");
-		noteTitleText.innerText = noteData.title;
-		noteTitle.appendChild(noteTitleText);
+		noteTitleText.classList.add("overflow-scroll", "whitespace-nowrap");
+		// Process the title in the same way as the text
+		let processedTitle = noteData.title;
+		if (processedTitle.length >= 25) {
+			noteTitleText.innerText = processedTitle.substring(0, 20) + "...";
+		} else {
+			noteTitleText.innerText = processedTitle;
+		}
 
+		noteTitle.appendChild(noteTitleText);
 		noteHeader.appendChild(noteTitle);
 
 		// Add the date to the header
@@ -236,7 +256,7 @@ function generateRandomId() {
 }
 
 function formatDate(isoDateString) {
-	const date = new Date();
+	const date = new Date(isoDateString);
 	const options = { year: "numeric", month: "long", day: "numeric" };
 	return date.toLocaleDateString("en-US", options);
 }

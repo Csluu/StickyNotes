@@ -10,7 +10,7 @@ window.electron.on("note-data", (note) => {
 	console.log(note.text);
 
 	noteTitle.innerHTML = note.title;
-	noteText.innerHTML = note.text;
+	noteText.innerHTML = note.text.replace(/\n/g, "<br>");
 
 	noteTitle.addEventListener("input", (event) => {
 		// Save data to the notes array
@@ -130,6 +130,11 @@ function toggleDropDown(dropDown, menu) {
 toggleDropDown(
 	document.getElementById("drop-down-1"),
 	document.getElementById("menu-1")
+);
+
+toggleDropDown(
+	document.getElementById("color-menu"),
+	document.getElementById("color-drop-down")
 );
 
 function toggleLock() {

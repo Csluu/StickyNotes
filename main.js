@@ -24,7 +24,7 @@ const createMainWindow = () => {
 	mainWindow = new BrowserWindow({
 		x,
 		y,
-		width: isDev ? 1500 : 425,
+		width: isDev ? 1500 : 430,
 		height: 675,
 		transparent: true,
 		resizable: false,
@@ -101,6 +101,13 @@ ipcMain.on("minimize-window", () => {
 	}
 });
 
+ipcMain.on("main-window", () => {
+	createMainWindow();
+
+	// Remove mainWindow from memory on close to prevent memory leak
+	mainWindow.on("closed", () => (mainWindow = null));
+});
+
 // 675
 ipcMain.on("create-new-window", (event, note) => {
 	console.log("Received 'create-new-window' event with note:", note);
@@ -137,7 +144,7 @@ ipcMain.on("create-new-window", (event, note) => {
 ipcMain.on("resize-window", (event, width, height) => {
 	const window = BrowserWindow.getFocusedWindow();
 	if (window) {
-		window.setMinimumSize(425, 250);
+		window.setMinimumSize(425, 300);
 		window.setSize(width, height);
 	}
 });

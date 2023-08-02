@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electron", {
+	mainWindow: () => ipcRenderer.send("main-window"),
 	closeWindow: () => ipcRenderer.send("close-window"),
 	minimizeWindow: () => ipcRenderer.send("minimize-window"),
 	newWindow: (note) => ipcRenderer.send("create-new-window", note || undefined),
