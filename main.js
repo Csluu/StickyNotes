@@ -16,8 +16,17 @@ const isWin = process.platform === "win32";
 const store = new Store();
 
 let mainWindow;
+const openNotes = new Map();
 
 const createMainWindow = () => {
+	// If mainWindow exists, just focus it
+	if (mainWindow) {
+		if (mainWindow.isMinimized()) {
+			mainWindow.restore();
+		}
+		mainWindow.focus();
+		return;
+	}
 	let { x, y } = store.get("windowPosition", { x: undefined, y: undefined });
 
 	// Create the browser window.
@@ -52,6 +61,11 @@ const createMainWindow = () => {
 	mainWindow.on("close", () => {
 		let { x, y } = mainWindow.getBounds();
 		store.set("windowPosition", { x, y });
+	});
+
+	// Reset the mainWindow variable to null when it's closed
+	mainWindow.on("closed", () => {
+		mainWindow = null;
 	});
 
 	// Open the DevTools.
@@ -108,37 +122,54 @@ ipcMain.on("main-window", () => {
 	mainWindow.on("closed", () => (mainWindow = null));
 });
 
-// 675
+//
 ipcMain.on("create-new-window", (event, note) => {
 	console.log("Received 'create-new-window' event with note:", note);
-	const newWindow = new BrowserWindow({
-		width: isDev ? 1500 : 425,
-		height: 300,
-		transparent: true,
-		resizable: false, // modified to allow resizing
-		frame: false,
-		fullscreenable: false,
-		maximizable: false,
-		webPreferences: {
-			// Set this to true for debugging
-			devTools: isDev ? true : false,
-			contextIsolation: true,
-			enableRemoteModule: false,
-			nodeIntegration: false,
-			preload: path.join(__dirname, "preload.js"),
-		},
-	});
 
-	newWindow.loadFile(path.join(__dirname, "./Renderer/html/note.html"));
+	const noteWindow = openNotes.get(note.id);
 
-	// Send note data and id to new window
-	newWindow.webContents.on("did-finish-load", () => {
-		console.log("new window did finish load, sending note data", note); // Add this line
-		newWindow.webContents.send("note-data", note);
-	});
+	if (noteWindow) {
+		if (noteWindow.isMinimized()) {
+			noteWindow.restore();
+		}
+		noteWindow.focus();
+	} else {
+		const newNoteWindow = new BrowserWindow({
+			width: isDev ? 1500 : 425,
+			height: 300,
+			transparent: true,
+			resizable: false, // modified to allow resizing
+			frame: false,
+			fullscreenable: false,
+			maximizable: false,
+			webPreferences: {
+				// Set this to true for debugging
+				devTools: isDev ? true : false,
+				contextIsolation: true,
+				enableRemoteModule: false,
+				nodeIntegration: false,
+				preload: path.join(__dirname, "preload.js"),
+			},
+		});
 
-	// Open the DevTools for newWindow
-	newWindow.webContents.openDevTools();
+		// Load, send data, etc...
+		newNoteWindow.loadFile(path.join(__dirname, "./Renderer/html/note.html"));
+		newNoteWindow.webContents.on("did-finish-load", () => {
+			newNoteWindow.webContents.send("note-data", note);
+		});
+
+		if (isDev) {
+			newNoteWindow.webContents.openDevTools();
+		}
+
+		// Add the new window to our map
+		openNotes.set(note.id, newNoteWindow);
+
+		// Remove the window from our map when it's closed
+		newNoteWindow.on("closed", () => {
+			openNotes.delete(note.id);
+		});
+	}
 });
 
 ipcMain.on("resize-window", (event, width, height) => {

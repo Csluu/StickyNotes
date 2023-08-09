@@ -1,4 +1,15 @@
+// Grab the main button element
+const dropDownButton = document.getElementById("color-drop-down");
 const deleteButton = document.querySelector("#deleteButton");
+// Define all the possible color classes
+const colorClasses = [
+	"bg-blue-500",
+	"bg-red-500",
+	"bg-green-500",
+	"bg-yellow-500",
+	"bg-orange-500",
+	"bg-pink-500",
+];
 
 // Fetch the note passed to this window
 window.electron.on("note-data", (note) => {
@@ -11,6 +22,12 @@ window.electron.on("note-data", (note) => {
 
 	noteTitle.innerHTML = note.title;
 	noteText.innerHTML = note.text.replace(/\n/g, "<br>");
+
+	// Apply color to the button based on note.color
+	if (note.color) {
+		dropDownButton.classList.remove(...colorClasses); // Remove any existing color classes
+		dropDownButton.classList.add(note.color); // Add the color from note.color
+	}
 
 	noteTitle.addEventListener("input", (event) => {
 		// Save data to the notes array
@@ -50,6 +67,34 @@ window.electron.on("note-data", (note) => {
 
 		// You may also want to close the window or navigate away after deleting the note
 		window.electron.closeWindow();
+	});
+
+	// Add event listeners to each color button
+	document.querySelectorAll(".color-btn").forEach((btn) => {
+		btn.addEventListener("click", function () {
+			// Remove existing color classes from the main button
+			dropDownButton.classList.remove(...colorClasses);
+
+			// Get the color class from the pressed button
+			const newColor = Array.from(btn.classList).find((cls) =>
+				colorClasses.includes(cls)
+			);
+
+			// Add the color class to the main button
+			if (newColor) {
+				dropDownButton.classList.add(newColor);
+
+				// Update the note object with the selected color
+				note.color = newColor;
+
+				// Update local storage with the new color
+				let noteId = note.id;
+				note.lastModified = getFormattedDate();
+				notes = notes.filter((noteItem) => noteItem.id !== noteId); // Remove the old version of the note
+				notes.push(note); // Push the updated version of the note
+				localStorage.setItem("notes", JSON.stringify(notes));
+			}
+		});
 	});
 });
 
@@ -139,10 +184,10 @@ toggleDropDown(
 
 function toggleLock() {
 	const menuLock1 = document.getElementById("lock-menu-1");
-	const container = document.getElementById("body");
+	const container = document.getElementById("noteBody");
 
 	menuLock1.addEventListener("click", () => {
-		container.classList.toggle("no-drag");
+		container.classList.toggle("yes-drag");
 	});
 }
 toggleLock();

@@ -8,6 +8,10 @@
 	-webkit-app-region: no-drag;
 }
 
+.yes-drag {
+	-webkit-app-region: drag;
+}
+
 *::-webkit-scrollbar {
 	display: none;
 }

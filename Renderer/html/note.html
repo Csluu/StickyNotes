@@ -12,15 +12,16 @@
 		<link rel="stylesheet" href="../css/styles.css" />
 		<script src="../js/noteRenderer.js" defer></script>
 	</head>
-	<body id="body" class="body h-full w-full">
+	<body class="body no-drag h-full w-full">
 		<main class="bg h-screen w-full">
 			<div class="flex h-full w-full flex-col place-items-center justify-start">
 				<div
-					class="mx-4 flex h-full w-full flex-row place-items-start justify-center gap-6 p-4"
+					class="no-drag mx-4 flex h-full w-full flex-row place-items-start justify-center gap-6 p-4"
 				>
 					<!-- Notes  -->
 					<section
-						class="relative ml-4 flex h-full w-full flex-col gap-2 overflow-scroll rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border"
+						id="noteBody"
+						class="yes-drag relative ml-4 flex h-full w-full flex-col gap-2 overflow-scroll rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border"
 					>
 						<header class="mt-6 flex flex-row justify-between gap-2">
 							<span class="flex place-items-center justify-center">
@@ -39,22 +40,22 @@
 									</header>
 									<div class="grid w-[74px] grid-cols-3 grid-rows-2 gap-2">
 										<button
-											class="col-span-1 row-span-1 h-5 w-5 rounded-sm bg-blue-500 hover:scale-110"
+											class="color-btn col-span-1 row-span-1 h-5 w-5 rounded-sm bg-blue-500 hover:scale-110"
 										></button>
 										<button
-											class="col-span-1 row-span-1 h-5 w-5 rounded-sm bg-red-500 hover:scale-110"
+											class="color-btn col-span-1 row-span-1 h-5 w-5 rounded-sm bg-red-500 hover:scale-110"
 										></button>
 										<button
-											class="col-span-1 row-span-1 h-5 w-5 rounded-sm bg-green-500 hover:scale-110"
+											class="color-btn col-span-1 row-span-1 h-5 w-5 rounded-sm bg-green-500 hover:scale-110"
 										></button>
 										<button
-											class="col-span-1 row-span-1 h-5 w-5 rounded-sm bg-yellow-500 hover:scale-110"
+											class="color-btn col-span-1 row-span-1 h-5 w-5 rounded-sm bg-yellow-500 hover:scale-110"
 										></button>
 										<button
-											class="col-span-1 row-span-1 h-5 w-5 rounded-sm bg-orange-500 hover:scale-110"
+											class="color-btn col-span-1 row-span-1 h-5 w-5 rounded-sm bg-orange-500 hover:scale-110"
 										></button>
 										<button
-											class="col-span-1 row-span-1 h-5 w-5 rounded-sm bg-pink-500 hover:scale-110"
+											class="color-btn col-span-1 row-span-1 h-5 w-5 rounded-sm bg-pink-500 hover:scale-110"
 										></button>
 									</div>
 								</div>

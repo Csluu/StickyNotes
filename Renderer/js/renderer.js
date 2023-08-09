@@ -19,10 +19,10 @@ toggleDropDown(
 
 function toggleLock() {
 	const menuLock1 = document.getElementById("lock-menu-1");
-	const container = document.getElementById("body");
+	const container = document.getElementById("menuBody");
 
 	menuLock1.addEventListener("click", () => {
-		container.classList.toggle("no-drag");
+		container.classList.toggle("yes-drag");
 	});
 }
 
@@ -35,6 +35,15 @@ function updateNotes() {
 	// Load all notes from local storage
 	const notes = JSON.parse(localStorage.getItem("notes")) || [];
 
+	const colorMap = {
+		red: "bg-red-500",
+		blue: "bg-blue-500",
+		green: "bg-green-500",
+		yellow: "bg-yellow-500",
+		orange: "bg-orange-500",
+		pink: "bg-pink-500",
+	};
+
 	// Sort the notes by date
 	notes.sort((a, b) => b.lastModified.localeCompare(a.lastModified));
 
@@ -43,15 +52,8 @@ function updateNotes() {
 		.querySelector('input[type="text"]')
 		.value.toLowerCase();
 
-	// Define an array with your color classes
-	const colors = [
-		"bg-pink-500",
-		"bg-blue-500",
-		"bg-red-500",
-		"bg-green-500",
-		"bg-orange-500",
-		"bg-yellow-500",
-	];
+	// Check if the search input is a color name
+	const searchColorClass = colorMap[searchBarInput];
 
 	// Loop over all notes
 	for (let i = 0; i < notes.length; i++) {
@@ -61,9 +63,16 @@ function updateNotes() {
 		const titleLowerCase = noteData.title.toLowerCase();
 		const textLowerCase = noteData.text.toLowerCase();
 
+		// If searching by color and the note's color doesn't match, skip
+		if (searchColorClass && noteData.color !== searchColorClass) {
+			continue;
+		}
+
 		// Check if the note's title or text includes the search input
 		// If it does not, skip to the next iteration of the loop
+		// If not searching by color, check if the note's title or text includes the search input
 		if (
+			!searchColorClass &&
 			!titleLowerCase.includes(searchBarInput) &&
 			!textLowerCase.includes(searchBarInput)
 		) {
@@ -129,11 +138,13 @@ function updateNotes() {
 			"place-items-center"
 		);
 
-		// Pick a random color from the array
-		const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
 		const noteCircle = document.createElement("span");
-		noteCircle.classList.add(randomColor, "w-3", "h-3", "rounded-full");
+		if (noteData.color) {
+			noteCircle.classList.add(noteData.color, "w-3", "h-3", "rounded-full");
+		} else {
+			noteCircle.classList.add("bg-green-500", "w-3", "h-3", "rounded-full");
+		}
+
 		noteTitle.appendChild(noteCircle);
 
 		// Add the title to header
@@ -223,6 +234,7 @@ newNoteButton.addEventListener("click", () => {
 		title: "Note",
 		text: "",
 		lastModified: getFormattedDate(),
+		color: "bg-green-500",
 	};
 	window.electron.newWindow(note);
 });
