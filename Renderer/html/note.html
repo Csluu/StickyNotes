@@ -6,7 +6,7 @@
 			http-equiv="Content-Security-Policy"
 			content="script-src 'self' 'unsafe-inline'"
 		/>
-		<title>Kanban</title>
+		<title>Sticky Notes</title>
 		<meta name="description" content="sticky note" />
 		<meta name="keywords" content="progress, productivity, sticky note," />
 		<link rel="stylesheet" href="../css/styles.css" />
@@ -14,9 +14,9 @@
 	</head>
 	<body class="body no-drag h-full w-full">
 		<main class="bg h-screen w-full">
-			<div class="flex h-full w-full flex-col place-items-center justify-start">
+			<div class="flex h-full w-full flex-col place-items-center">
 				<div
-					class="no-drag mx-4 flex h-full w-full flex-row place-items-start justify-center gap-6 p-4"
+					class="no-drag mx-4 flex h-full w-full flex-row place-items-start justify-center gap-6 p-5"
 				>
 					<!-- Notes  -->
 					<section
@@ -66,7 +66,7 @@
 								<div
 									id="noteTitle"
 									contenteditable="true"
-									class="flex-nowrap overflow-scroll whitespace-nowrap rounded-lg text-xl font-semibold text-gray-500 outline-none"
+									class="flex-nowrap overflow-scroll whitespace-nowrap text-xl font-semibold text-gray-500 outline-none"
 								>
 									<h2>Notes</h2>
 								</div>
@@ -126,11 +126,13 @@
 												class="duration-150 ease-in-out group-hover:scale-105 group-hover:opacity-100"
 											>
 												<path
+													id="lock-icon"
 													fill="gray"
 													d="M6 22q-.825 0-1.413-.588T4 20V10q0-.825.588-1.413T6 8h1V6q0-2.075 1.463-3.538T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.588 1.413T18 22H6Zm6-5q.825 0 1.413-.588T14 15q0-.825-.588-1.413T12 13q-.825 0-1.413.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z"
 												/>
 											</svg>
 											<a
+												id="lock-text"
 												href="#"
 												class="py-[10px] duration-150 ease-in-out group-hover:scale-[102%]"
 												>Lock</a

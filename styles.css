@@ -41,7 +41,7 @@
 		@apply no-drag flex h-fit min-h-[100px] w-full flex-col gap-4 p-2;
 	}
 	.drop-menu {
-		@apply no-drag fixed z-10 mt-8 w-36 translate-x-[-55px] divide-y divide-dark-gray-highlight rounded-xl bg-opaque-dark-gray shadow-border;
+		@apply no-drag fixed z-10 mt-8 w-36 translate-x-[-55px] divide-y divide-dark-gray-highlight rounded-xl border-[1px] border-black bg-opaque-dark-gray shadow-border;
 	}
 	.card-text {
 		@apply h-auto w-full px-5 outline-none;

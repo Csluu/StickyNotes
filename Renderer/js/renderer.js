@@ -19,9 +19,31 @@ toggleDropDown(
 
 function toggleLock() {
 	const menuLock1 = document.getElementById("lock-menu-1");
-	const container = document.getElementById("menuBody");
+	const lockIcon = document.getElementById("lock-icon");
+	const container = document.getElementById("noteBody");
+	const lockText = document.getElementById("lock-text");
+
+	const lockedPath =
+		"M6 22q-.825 0-1.413-.588T4 20V10q0-.825.588-1.413T6 8h1V6q0-2.075 1.463-3.538T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.588 1.413T18 22H6Zm6-5q.825 0 1.413-.588T14 15q0-.825-.588-1.413T12 13q-.825 0-1.413.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z";
+	const unlockedPath =
+		"M6 8h9V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6H7q0-2.075 1.463-3.538T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.588 1.413T18 22H6q-.825 0-1.413-.588T4 20V10q0-.825.588-1.413T6 8Zm6 9q.825 0 1.413-.588T14 15q0-.825-.588-1.413T12 13q-.825 0-1.413.588T10 15q0 .825.588 1.413T12 17Z";
 
 	menuLock1.addEventListener("click", () => {
+		const currentPath = lockIcon.getAttribute("d");
+
+		if (currentPath === lockedPath) {
+			lockIcon.setAttribute("d", unlockedPath);
+		} else {
+			lockIcon.setAttribute("d", lockedPath);
+		}
+
+		// Toggle text for Lock/Unlock
+		if (lockText.innerHTML === "Lock") {
+			lockText.innerHTML = "Unlock";
+		} else {
+			lockText.innerHTML = "Lock";
+		}
+
 		container.classList.toggle("yes-drag");
 	});
 }
@@ -87,7 +109,14 @@ function updateNotes() {
 			"gap-2",
 			"py-5",
 			"cursor-pointer",
-			"noteWindow"
+			"noteWindow",
+			"hover:bg-blue-600",
+			"hover:scale-[102%]",
+			"hover:border-blue-500",
+			"group",
+			"transition",
+			"duration-75",
+			"ease-in-out"
 		);
 
 		// Set data-id attribute to the note's index
@@ -152,8 +181,8 @@ function updateNotes() {
 		noteTitleText.classList.add("overflow-scroll", "whitespace-nowrap");
 		// Process the title in the same way as the text
 		let processedTitle = noteData.title;
-		if (processedTitle.length >= 25) {
-			noteTitleText.innerText = processedTitle.substring(0, 20) + "...";
+		if (processedTitle.length >= 15) {
+			noteTitleText.innerText = processedTitle.substring(0, 15) + "...";
 		} else {
 			noteTitleText.innerText = processedTitle;
 		}
@@ -163,7 +192,7 @@ function updateNotes() {
 
 		// Add the date to the header
 		const noteDate = document.createElement("p");
-		noteDate.classList.add("text-gray-500");
+		noteDate.classList.add("text-gray-500", "group-hover:text-gray-200");
 		noteDate.innerText = formatDate(noteData.lastModified);
 		noteHeader.appendChild(noteDate);
 
@@ -181,7 +210,11 @@ function updateNotes() {
 		} else {
 			noteText.innerText = processedText;
 		}
-		noteText.classList.add("card-text", "text-gray-500");
+		noteText.classList.add(
+			"card-text",
+			"text-gray-500",
+			"group-hover:text-gray-200"
+		);
 		noteCard.appendChild(noteText);
 
 		// Append the note card to the container
