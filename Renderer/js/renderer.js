@@ -182,7 +182,7 @@ function updateNotes() {
 		// Process the title in the same way as the text
 		let processedTitle = noteData.title;
 		if (processedTitle.length >= 15) {
-			noteTitleText.innerText = processedTitle.substring(0, 15) + "...";
+			noteTitleText.innerText = processedTitle.substring(0, 13) + "...";
 		} else {
 			noteTitleText.innerText = processedTitle;
 		}
