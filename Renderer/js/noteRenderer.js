@@ -12,6 +12,9 @@ const colorClasses = [
 ];
 
 // Fetch the note passed to this window
+// ! Will have to redo this
+// ! The implementation is not as good as it should be I should be passing only the ID from the main menu to the note window then grabbing and loading the information from storage
+// ! Passing the note ID and the content makes it harder to implement features on top of
 window.electron.on("note-data", (note) => {
 	const noteTitle = document.querySelector("#noteTitle");
 	const noteText = document.querySelector("#noteText");
@@ -96,7 +99,26 @@ window.electron.on("note-data", (note) => {
 			}
 		});
 	});
+
+	console.log(note.id);
+
+	function toggleTransparent(dropDown, menu, noteID) {
+		menu.addEventListener("click", () => {
+			dropDown.classList.toggle("opacity-75");
+
+			// Toggle the "always on top" state
+			window.electronAPI.toggleAlwaysOnTop(noteID);
+			console.log(note.id);
+		});
+	}
+
+	toggleTransparent(
+		document.getElementById("body"),
+		document.getElementById("transparent-menu-1"),
+		note.id
+	);
 });
+// ! End
 
 // Function to get last modification time of a note
 function getLastModifiedTime(id) {
@@ -141,6 +163,7 @@ function getFormattedDate() {
 const lastModifiedTime = getLastModifiedTime("uniqueNoteId1");
 console.log(lastModifiedTime);
 
+// Resizing Window
 window.onload = () => {
 	console.log("Window loaded");
 	let resizing = false;
@@ -153,10 +176,15 @@ window.onload = () => {
 		console.log("MouseDown: ", resizing);
 	});
 
+	// throttling as it jitters when resizing in the x position
+	let throttleTimeout;
 	document.addEventListener("mousemove", (e) => {
-		if (resizing) {
-			console.log("MouseMove: ", e.clientX, e.clientY);
-			window.electronAPI.resizeWindow(e.clientX + 50, e.clientY + 50);
+		if (resizing && !throttleTimeout) {
+			throttleTimeout = setTimeout(() => {
+				console.log("MouseMove: ", e.clientX, e.clientY);
+				window.electronAPI.resizeWindow(e.clientX + 50, e.clientY + 200);
+				throttleTimeout = null;
+			}, 30); // Throttle time in milliseconds
 		}
 	});
 
@@ -260,9 +288,6 @@ function checkForMenuHide(event) {
 		}
 	});
 }
-
-// Attach the function to the document
-document.addEventListener("click", checkForMenuHide);
 
 // Attach the function to the document
 document.addEventListener("click", checkForMenuHide);

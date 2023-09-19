@@ -732,6 +732,10 @@ video {
   -webkit-app-region: no-drag;
 }
 
+.note-card {
+  height: calc(100vh - 200px);
+}
+
 .fixed{
   position: fixed;
 }
@@ -836,10 +840,6 @@ video {
 
 .h-screen{
   height: 100vh;
-}
-
-.h-\[630px\]{
-  height: 630px;
 }
 
 .max-h-\[625px\]{
@@ -1062,10 +1062,6 @@ video {
   padding: 1.25rem;
 }
 
-.p-10{
-  padding: 2.5rem;
-}
-
 .px-2{
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1162,6 +1158,10 @@ video {
 
 .opacity-50{
   opacity: 0.5;
+}
+
+.opacity-75{
+  opacity: 0.75;
 }
 
 .shadow-border{

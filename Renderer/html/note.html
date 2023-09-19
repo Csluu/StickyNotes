@@ -12,16 +12,16 @@
 		<link rel="stylesheet" href="../css/styles.css" />
 		<script src="../js/noteRenderer.js" defer></script>
 	</head>
-	<body class="body no-drag h-full w-full">
-		<main class="bg h-screen w-full">
-			<div class="flex h-full w-full flex-col place-items-center">
+	<body id="body" class="body no-drag w-full">
+		<main class="bg w-full">
+			<div class="flex w-full flex-col place-items-center">
 				<div
-					class="no-drag mx-4 flex h-full w-full flex-row place-items-start justify-center gap-6 p-5"
+					class="no-drag mx-4 flex w-full flex-row place-items-start justify-center gap-6 p-5"
 				>
 					<!-- Notes  -->
 					<section
 						id="noteBody"
-						class="yes-drag relative ml-4 flex h-full w-full flex-col gap-2 overflow-scroll rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border"
+						class="note-card yes-drag relative ml-4 flex w-full flex-col gap-2 overflow-scroll rounded-3xl border-[1px] border-black bg-clear-dark-gray px-5 pb-8 shadow-border"
 					>
 						<header class="mt-6 flex flex-row justify-between gap-2">
 							<span class="flex place-items-center justify-center">
@@ -117,6 +117,28 @@
 										</button>
 									</div>
 									<ul class="text-sm text-gray-700 dark:text-gray-200">
+										<button
+											id="transparent-menu-1"
+											class="no-drag group flex w-full select-none flex-row place-items-center justify-start gap-2 rounded-lg px-4 opacity-50 hover:opacity-100"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="16"
+												height="16"
+												viewBox="0 0 20 20"
+												class="duration-150 ease-in-out group-hover:scale-105 group-hover:opacity-100"
+											>
+												<path
+													fill="gray"
+													d="M10 2a4 4 0 1 0 3.123 6.5H10v-1h3.71c.127-.315.215-.65.26-1H10v-1h3.97a3.973 3.973 0 0 0-.26-1H10v-1h3.123A3.993 3.993 0 0 0 10 2Zm-4.991 9A2.001 2.001 0 0 0 3 13c0 1.691.833 2.966 2.135 3.797C6.417 17.614 8.145 18 10 18c1.694 0 3.282-.322 4.52-1H10v-1h5.836c.283-.3.522-.636.708-1.005H10v-1h6.896A4.69 4.69 0 0 0 17 13v-.005h-7v-1h6.73A2 2 0 0 0 15 11H5.009Z"
+												/>
+											</svg>
+											<a
+												href="#"
+												class="py-[10px] duration-150 ease-in-out group-hover:scale-[102%]"
+												>Incognito</a
+											>
+										</button>
 										<button id="lock-menu-1" class="lock-menu group">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"

@@ -122,6 +122,9 @@ ipcMain.on("main-window", () => {
 	mainWindow.on("closed", () => (mainWindow = null));
 });
 
+// Create a function that generates a unique key for storing window position and size
+const getWindowBoundsKey = (id) => `windowBounds-${id}`;
+
 //
 ipcMain.on("create-new-window", (event, note) => {
 	console.log("Received 'create-new-window' event with note:", note);
@@ -134,9 +137,14 @@ ipcMain.on("create-new-window", (event, note) => {
 		}
 		noteWindow.focus();
 	} else {
+		const boundsKey = getWindowBoundsKey(note.id);
+		const { width, height, x, y } = store.get(boundsKey, {});
+
 		const newNoteWindow = new BrowserWindow({
-			width: isDev ? 1500 : 425,
-			height: 300,
+			x,
+			y,
+			width: width || (isDev ? 1500 : 425),
+			height: height || 350,
 			transparent: true,
 			resizable: false, // modified to allow resizing
 			frame: false,
@@ -165,7 +173,15 @@ ipcMain.on("create-new-window", (event, note) => {
 		// Add the new window to our map
 		openNotes.set(note.id, newNoteWindow);
 
+		// Save window bounds when closed
+		// "close" is right before its going to close out
+		newNoteWindow.on("close", () => {
+			const { x, y, width, height } = newNoteWindow.getBounds();
+			store.set(boundsKey, { x, y, width, height });
+		});
+
 		// Remove the window from our map when it's closed
+		// "closed" is when the window is actually closed out
 		newNoteWindow.on("closed", () => {
 			openNotes.delete(note.id);
 		});
@@ -175,7 +191,24 @@ ipcMain.on("create-new-window", (event, note) => {
 ipcMain.on("resize-window", (event, width, height) => {
 	const window = BrowserWindow.getFocusedWindow();
 	if (window) {
-		window.setMinimumSize(425, 300);
+		window.setMinimumSize(425, 350);
 		window.setSize(width, height);
+	}
+});
+
+ipcMain.on("toggle-always-on-top", (event, noteId) => {
+	let targetWindow;
+
+	// If a noteId is provided, try to find that specific window
+	if (noteId) {
+		targetWindow = openNotes.get(noteId);
+	} else {
+		// Otherwise, use the focused window
+		targetWindow = BrowserWindow.getFocusedWindow();
+	}
+
+	if (targetWindow) {
+		const currentState = targetWindow.isAlwaysOnTop();
+		targetWindow.setAlwaysOnTop(!currentState);
 	}
 });

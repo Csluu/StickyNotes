@@ -14,6 +14,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	resizeWindow: (width, height) => {
 		ipcRenderer.send("resize-window", width, height);
 	},
+	toggleAlwaysOnTop: (noteId) => {
+		ipcRenderer.send("toggle-always-on-top", noteId);
+	},
 });
 
 ipcRenderer.on("note-data", (event, note) => {

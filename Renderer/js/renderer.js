@@ -305,3 +305,39 @@ function formatDate(isoDateString) {
 	const options = { year: "numeric", month: "long", day: "numeric" };
 	return date.toLocaleDateString("en-US", options);
 }
+
+["menu-1"].forEach((buttonId) => {
+	document.getElementById(buttonId).addEventListener("click", function (event) {
+		// Assuming the menu IDs are the button IDs without the "show-" prefix.
+		const menuId = buttonId.replace("show-", "");
+		document.getElementById(menuId).classList.remove("hidden");
+		event.stopPropagation();
+	});
+});
+
+// The function to run whenever a click is detected in the document
+function checkForMenuHide(event) {
+	// The element that was clicked
+	const clickedElement = event.target;
+
+	// An array containing the IDs of all menus you want to manage
+	const menuIds = ["drop-down-1"];
+
+	// Loop through each menu ID
+	menuIds.forEach((menuId) => {
+		// Get the menu element by its ID
+		const menu = document.getElementById(menuId);
+
+		// Check if the clicked element is inside the menu or is the menu itself
+		const isInsideMenu =
+			menu.contains(clickedElement) || menu === clickedElement;
+
+		if (!isInsideMenu) {
+			// If the click was outside the menu, hide it
+			menu.classList.add("hidden");
+		}
+	});
+}
+
+// Attach the function to the document
+document.addEventListener("click", checkForMenuHide);
