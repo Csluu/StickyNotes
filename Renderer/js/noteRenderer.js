@@ -38,15 +38,7 @@ window.electron.on("note-data", (note) => {
 		noteId = note.id;
 		note.lastModified = getFormattedDate();
 
-		const noteIndex = notes.findIndex((noteItem) => noteItem.id === noteId);
-		if (noteIndex !== -1) {
-			notes[noteIndex] = note; // Update the existing note in its original position
-		} else {
-			notes.push(note); // Or push it if not found, though it should be found
-		}
-
-		// Save all notes to local storage
-		localStorage.setItem("notes", JSON.stringify(notes));
+		saveUpdatedNote(note);
 	});
 
 	noteText.addEventListener("input", (event) => {
@@ -55,15 +47,7 @@ window.electron.on("note-data", (note) => {
 		noteId = note.id;
 		note.lastModified = getFormattedDate();
 		if (!note.title) noteData.title = "Notes"; // Add default title if it's not there
-		const noteIndex = notes.findIndex((noteItem) => noteItem.id === noteId);
-		if (noteIndex !== -1) {
-			notes[noteIndex] = note;
-		} else {
-			notes.push(note);
-		}
-
-		// Save all notes to local storage
-		localStorage.setItem("notes", JSON.stringify(notes));
+		saveUpdatedNote(note);
 	});
 
 	deleteButton.addEventListener("click", () => {
@@ -101,14 +85,26 @@ window.electron.on("note-data", (note) => {
 				// Update local storage with the new color
 				let noteId = note.id;
 				note.lastModified = getFormattedDate();
-				notes = notes.filter((noteItem) => noteItem.id !== noteId); // Remove the old version of the note
-				notes.push(note); // Push the updated version of the note
-				localStorage.setItem("notes", JSON.stringify(notes));
+				saveUpdatedNote(note);
 			}
 		});
 	});
 
 	console.log(note.id);
+
+	function saveUpdatedNote(updatedNote) {
+		// * Need to grab the latest note at it could change when having another note open!!!!!!!
+		// * for example if this note data was still on index 65 and another was on 70 making changes on index 65 would save the list only up to 65
+		const notes = JSON.parse(localStorage.getItem("notes")) || [];
+		const noteIndex = notes.findIndex((note) => note.id === updatedNote.id);
+		if (noteIndex !== -1) {
+			notes[noteIndex] = updatedNote;
+		} else {
+			// In case the note wasn't found, which shouldn't happen, but just in case:
+			notes.push(updatedNote);
+		}
+		localStorage.setItem("notes", JSON.stringify(notes));
+	}
 
 	function toggleTransparent(dropDown, menu, noteID) {
 		menu.addEventListener("click", () => {
