@@ -37,8 +37,13 @@ window.electron.on("note-data", (note) => {
 		note.title = event.target.innerText || "Notes"; // Use default title if input is empty
 		noteId = note.id;
 		note.lastModified = getFormattedDate();
-		notes = notes.filter((note) => note.id !== noteId); // Remove the old version of the note
-		notes.push(note); // Push the updated version of the note
+
+		const noteIndex = notes.findIndex((noteItem) => noteItem.id === noteId);
+		if (noteIndex !== -1) {
+			notes[noteIndex] = note; // Update the existing note in its original position
+		} else {
+			notes.push(note); // Or push it if not found, though it should be found
+		}
 
 		// Save all notes to local storage
 		localStorage.setItem("notes", JSON.stringify(notes));
@@ -50,9 +55,12 @@ window.electron.on("note-data", (note) => {
 		noteId = note.id;
 		note.lastModified = getFormattedDate();
 		if (!note.title) noteData.title = "Notes"; // Add default title if it's not there
-		notes = notes.filter((note) => note.id !== noteId); // Remove the old version of the note
-
-		notes.push(note); // Push the updated version of the note
+		const noteIndex = notes.findIndex((noteItem) => noteItem.id === noteId);
+		if (noteIndex !== -1) {
+			notes[noteIndex] = note;
+		} else {
+			notes.push(note);
+		}
 
 		// Save all notes to local storage
 		localStorage.setItem("notes", JSON.stringify(notes));

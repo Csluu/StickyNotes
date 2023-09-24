@@ -7,7 +7,7 @@ const Store = require("electron-store");
 const currentWindow = require("electron").BrowserWindow.getFocusedWindow();
 const path = require("path");
 
-process.env.NODE_ENV = "production";
+process.env.NODE_ENV = "dev";
 
 const isDev = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
