@@ -20,7 +20,7 @@ toggleDropDown(
 function toggleLock() {
 	const menuLock1 = document.getElementById("lock-menu-1");
 	const lockIcon = document.getElementById("lock-icon");
-	const container = document.getElementById("noteBody");
+	const container = document.getElementById("menuBody");
 	const lockText = document.getElementById("lock-text");
 
 	const lockedPath =

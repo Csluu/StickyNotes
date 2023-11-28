@@ -3,6 +3,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require("electron");
 const Store = require("electron-store");
+const contextMenu = require("electron-context-menu");
 
 const currentWindow = require("electron").BrowserWindow.getFocusedWindow();
 const path = require("path");
@@ -17,6 +18,13 @@ const store = new Store();
 
 let mainWindow;
 const openNotes = new Map();
+
+contextMenu({
+	spellChecker: true,
+	showSearchWithGoogle: false,
+	showCopyImage: false,
+	showSaveImageAs: false,
+});
 
 const createMainWindow = () => {
 	// If mainWindow exists, just focus it
@@ -43,6 +51,7 @@ const createMainWindow = () => {
 			: path.join(__dirname, "./Renderer/assets/icons/icon.png"),
 		webPreferences: {
 			// Set this to false when in production
+			spellcheck: true,
 			devTools: isDev ? true : false,
 			nodeIntegration: true,
 			contextIsolation: true,
@@ -74,21 +83,41 @@ const createMainWindow = () => {
 	// Get the button element
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
-	createMainWindow();
+// * App Initialization
+// Request single instance lock
+// Making sure if there is another instance of this application or not.
 
-	// Remove mainWindow from memory on close to prevent memory leak
-	mainWindow.on("closed", () => (mainWindow = null));
+const gotTheLock = app.requestSingleInstanceLock();
 
-	app.on("activate", () => {
-		if (BrowserWindow.getAllWindows().length === 0) {
-			createMainWindow();
+if (!gotTheLock) {
+	// If there is another instance running quit this new instance
+	console.log("Application is already running");
+	app.quit();
+} else {
+	app.on("second-instance", (event, commandLine, workingDirectory) => {
+		// Someone tried to run a second instance, we should focus our window
+		if (mainWindow) {
+			if (mainWindow.isMinimized()) mainWindow.restore();
+			mainWindow.focus();
 		}
 	});
-});
+
+	// This method will be called when Electron has finished
+	// initialization and is ready to create browser windows.
+	// Some APIs can only be used after this event occurs.
+	app.whenReady().then(() => {
+		createMainWindow();
+
+		// Remove mainWindow from memory on close to prevent memory leak
+		mainWindow.on("closed", () => (mainWindow = null));
+
+		app.on("activate", () => {
+			if (BrowserWindow.getAllWindows().length === 0) {
+				createMainWindow();
+			}
+		});
+	});
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -152,6 +181,7 @@ ipcMain.on("create-new-window", (event, note) => {
 			maximizable: false,
 			webPreferences: {
 				// Set this to true for debugging
+				spellcheck: true,
 				devTools: isDev ? true : false,
 				contextIsolation: true,
 				enableRemoteModule: false,
