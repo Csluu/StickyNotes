@@ -1,7 +1,7 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const Store = require("electron-store");
 const contextMenu = require("electron-context-menu");
 
@@ -82,6 +82,29 @@ const createMainWindow = () => {
 
 	// Get the button element
 };
+
+// ! Need to edit this to make it work with our code
+function showDeleteConfirmation(win) {
+	const options = {
+		type: "question",
+		buttons: ["Yes", "No"],
+		defaultId: 1,
+		title: "Confirm Delete",
+		message: "Are you sure you want to delete this?",
+		detail: "This action cannot be undone.",
+	};
+
+	dialog.showMessageBox(win, options).then((result) => {
+		if (result.response === 0) {
+			// User clicked 'Yes'
+			console.log("Item will be deleted");
+			// Perform the delete action here
+		} else {
+			// User clicked 'No' or closed the dialog
+			console.log("Item will not be deleted");
+		}
+	});
+}
 
 // * App Initialization
 // Request single instance lock
