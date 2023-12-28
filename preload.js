@@ -21,6 +21,4 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
 ipcRenderer.on("note-data", (event, note) => {
 	console.log("note-data event received", note);
-	document.getElementById("noteTitle").value = note.title;
-	document.getElementById("noteText").value = note.text;
 });

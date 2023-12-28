@@ -247,15 +247,16 @@ function bindEventListeners(notes) {
 	});
 }
 
+// Make it so that once it saves on the note renderer it will call this function 
 window.addEventListener("DOMContentLoaded", () => {
 	const notes = updateNotes();
 	bindEventListeners(notes);
 
 	// Update notes every 5 seconds
-	setInterval(() => {
-		const newNotes = updateNotes();
-		bindEventListeners(newNotes);
-	}, 5000);
+	// setInterval(() => {
+	// 	const newNotes = updateNotes();
+	// 	bindEventListeners(newNotes);
+	// }, 5000);
 });
 
 // Attach an event listener to the new note button

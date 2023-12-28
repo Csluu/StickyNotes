@@ -15,10 +15,12 @@ const colorClasses = [
 // ! Will have to redo this
 // ! The implementation is not as good as it should be I should be passing only the ID from the main menu to the note window then grabbing and loading the information from storage
 // ! Passing the note ID and the content makes it harder to implement features on top of
-window.electron.on("note-data", (note) => {
-	const noteTitle = document.querySelector("#noteTitle");
-	const noteText = document.querySelector("#noteText");
+window.electron.on("note-data", (noteID) => {
+	// const noteTitle = document.querySelector("#noteTitle");
+	// const noteText = document.querySelector("#noteText");
 	let notes = JSON.parse(localStorage.getItem("notes")) || [];
+	const note = notes.find((n) => n.id === noteID);
+
 	console.log(note);
 	// Display the note
 	console.log(note.text);
@@ -59,7 +61,8 @@ window.electron.on("note-data", (note) => {
 
 		// Update local storage
 		localStorage.setItem("notes", JSON.stringify(updatedNotes));
-
+		window.electron.ipcRenderer.send("remove-note", noteId);
+		console.log("Deleted");
 		// You may also want to close the window or navigate away after deleting the note
 		window.electron.closeWindow();
 	});

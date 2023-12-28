@@ -134,6 +134,18 @@ if (!gotTheLock) {
 		// Remove mainWindow from memory on close to prevent memory leak
 		mainWindow.on("closed", () => (mainWindow = null));
 
+		// Load saved note states
+		const savedNoteKeys = Object.keys(store.store).filter((key) =>
+			key.startsWith("noteState-")
+		);
+
+		savedNoteKeys.forEach((key) => {
+			const noteState = store.get(key); // Define noteState here for each saved note
+			createNoteWindow(noteState);
+			openNotes.set(noteState.id, noteState);
+		});
+
+		// ! Wtf does this do again
 		app.on("activate", () => {
 			if (BrowserWindow.getAllWindows().length === 0) {
 				createMainWindow();
@@ -177,8 +189,9 @@ ipcMain.on("main-window", () => {
 // Create a function that generates a unique key for storing window position and size
 const getWindowBoundsKey = (id) => `windowBounds-${id}`;
 
-//
-ipcMain.on("create-new-window", (event, note) => {
+// ! I have to make this a function so I can call it for the open notes
+// ! Just have the ipcmain.on call the function
+const createNoteWindow = (note) => {
 	console.log("Received 'create-new-window' event with note:", note);
 
 	const noteWindow = openNotes.get(note.id);
@@ -216,7 +229,8 @@ ipcMain.on("create-new-window", (event, note) => {
 		// Load, send data, etc...
 		newNoteWindow.loadFile(path.join(__dirname, "./Renderer/html/note.html"));
 		newNoteWindow.webContents.on("did-finish-load", () => {
-			newNoteWindow.webContents.send("note-data", note);
+			// ! Sending data
+			newNoteWindow.webContents.send("note-data", note.id);
 		});
 
 		if (isDev) {
@@ -230,15 +244,18 @@ ipcMain.on("create-new-window", (event, note) => {
 		// "close" is right before its going to close out
 		newNoteWindow.on("close", () => {
 			const { x, y, width, height } = newNoteWindow.getBounds();
-			store.set(boundsKey, { x, y, width, height });
+			const noteState = { id: note.id, x, y, width, height }; // noteState is defined here
+			store.set(`noteState-${note.id}`, noteState);
 		});
 
 		// Remove the window from our map when it's closed
 		// "closed" is when the window is actually closed out
-		newNoteWindow.on("closed", () => {
-			openNotes.delete(note.id);
-		});
+		newNoteWindow.on("closed", () => {});
 	}
+};
+
+ipcMain.on("create-new-window", (event, note) => {
+	createNoteWindow(note);
 });
 
 ipcMain.on("resize-window", (event, width, height) => {
@@ -264,4 +281,9 @@ ipcMain.on("toggle-always-on-top", (event, noteId) => {
 		const currentState = targetWindow.isAlwaysOnTop();
 		targetWindow.setAlwaysOnTop(!currentState);
 	}
+});
+
+ipcMain.on("remove-note", (event, noteId) => {
+	store.delete(`noteState-${noteId}`);
+	console.log("Deleted");
 });
