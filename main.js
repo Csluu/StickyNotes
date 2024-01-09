@@ -17,6 +17,10 @@ const isWin = process.platform === "win32";
 const store = new Store();
 
 let mainWindow;
+// Getting the current note value or setting it as empty
+let currentNotes = store.get("currentNotes") || [];
+// For dev purposes to clear currentNote data
+// currentNotes = store.set("currentNotes", []);
 const openNotes = new Map();
 
 contextMenu({
@@ -131,19 +135,16 @@ if (!gotTheLock) {
 	app.whenReady().then(() => {
 		createMainWindow();
 
+		// Open all the notes in the previous session
+		// Check if currentNotes is actually an array
+		if (Array.isArray(currentNotes)) {
+			for (let i = 0; i < currentNotes.length; i++) {
+				let note = currentNotes[i];
+				createNoteWindow(note);
+			}
+		}
 		// Remove mainWindow from memory on close to prevent memory leak
 		mainWindow.on("closed", () => (mainWindow = null));
-
-		// Load saved note states
-		const savedNoteKeys = Object.keys(store.store).filter((key) =>
-			key.startsWith("noteState-")
-		);
-
-		savedNoteKeys.forEach((key) => {
-			const noteState = store.get(key); // Define noteState here for each saved note
-			createNoteWindow(noteState);
-			openNotes.set(noteState.id, noteState);
-		});
 
 		// ! Wtf does this do again
 		app.on("activate", () => {
@@ -189,12 +190,10 @@ ipcMain.on("main-window", () => {
 // Create a function that generates a unique key for storing window position and size
 const getWindowBoundsKey = (id) => `windowBounds-${id}`;
 
-// ! I have to make this a function so I can call it for the open notes
-// ! Just have the ipcmain.on call the function
 const createNoteWindow = (note) => {
 	console.log("Received 'create-new-window' event with note:", note);
 
-	const noteWindow = openNotes.get(note.id);
+	const noteWindow = openNotes.get(note);
 
 	if (noteWindow) {
 		if (noteWindow.isMinimized()) {
@@ -202,7 +201,7 @@ const createNoteWindow = (note) => {
 		}
 		noteWindow.focus();
 	} else {
-		const boundsKey = getWindowBoundsKey(note.id);
+		const boundsKey = getWindowBoundsKey(note);
 		const { width, height, x, y } = store.get(boundsKey, {});
 
 		const newNoteWindow = new BrowserWindow({
@@ -230,7 +229,7 @@ const createNoteWindow = (note) => {
 		newNoteWindow.loadFile(path.join(__dirname, "./Renderer/html/note.html"));
 		newNoteWindow.webContents.on("did-finish-load", () => {
 			// ! Sending data
-			newNoteWindow.webContents.send("note-data", note.id);
+			newNoteWindow.webContents.send("note-data", note);
 		});
 
 		if (isDev) {
@@ -238,19 +237,37 @@ const createNoteWindow = (note) => {
 		}
 
 		// Add the new window to our map
-		openNotes.set(note.id, newNoteWindow);
+		openNotes.set(note, newNoteWindow);
 
+		// Check if the note already exists in the currentNotes array
+		const noteExists = currentNotes.some(
+			(existingNote) => existingNote === note
+		);
+
+		if (!noteExists) {
+			// Add the note to the currentNotes array
+			currentNotes.push(note);
+
+			// Update the store with the new array
+			store.set("currentNotes", currentNotes);
+			console.log("Note added to the store:", note);
+			console.log(currentNotes);
+		} else {
+			console.log("Note already exists in the store:", note);
+		}
 		// Save window bounds when closed
 		// "close" is right before its going to close out
 		newNoteWindow.on("close", () => {
 			const { x, y, width, height } = newNoteWindow.getBounds();
-			const noteState = { id: note.id, x, y, width, height }; // noteState is defined here
-			store.set(`noteState-${note.id}`, noteState);
+			store.set(boundsKey, { x, y, width, height });
+			// Need this as it will get confused when the note was exited out and trying to reopen it
 		});
 
 		// Remove the window from our map when it's closed
 		// "closed" is when the window is actually closed out
-		newNoteWindow.on("closed", () => {});
+		newNoteWindow.on("closed", () => {
+			openNotes.delete(note);
+		});
 	}
 };
 
@@ -283,7 +300,10 @@ ipcMain.on("toggle-always-on-top", (event, noteId) => {
 	}
 });
 
-ipcMain.on("remove-note", (event, noteId) => {
-	store.delete(`noteState-${noteId}`);
-	console.log("Deleted");
+ipcMain.on("quit-note", (event, noteId) => {
+	currentNotes = store.get("currentNotes") || [];
+	const newNotes = currentNotes.filter((note) => note !== noteId);
+	store.set("currentNotes", newNotes);
+	console.log("deleted note " + noteId);
+	console.log(newNotes);
 });

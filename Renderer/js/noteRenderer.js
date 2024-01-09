@@ -21,6 +21,11 @@ window.electron.on("note-data", (noteID) => {
 	let notes = JSON.parse(localStorage.getItem("notes")) || [];
 	const note = notes.find((n) => n.id === noteID);
 
+	// Using closure to pass the ID into the quitnote function
+	document
+		.getElementById("noteQuit")
+		.addEventListener("click", quitNoteAndCloseWindow(note.id));
+
 	console.log(note);
 	// Display the note
 	console.log(note.text);
@@ -303,3 +308,11 @@ document.addEventListener("copy", function (e) {
 	e.clipboardData.setData("text/plain", window.getSelection().toString());
 	e.preventDefault(); // We want our data, not data from any selection, to be written to the clipboard
 });
+
+// Deleting the note from the open note session and closing the window
+function quitNoteAndCloseWindow(noteId) {
+	return function () {
+		window.electron.quitNote(noteId);
+		window.electron.closeWindow();
+	};
+}

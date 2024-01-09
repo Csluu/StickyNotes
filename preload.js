@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld("electron", {
 	minimizeWindow: () => ipcRenderer.send("minimize-window"),
 	newWindow: (note) => ipcRenderer.send("create-new-window", note || undefined),
 	updateNote: (note) => ipcRenderer.send("update-note", note),
+	quitNote: (noteID) => ipcRenderer.send("quit-note", noteID),
 	on: (channel, func) =>
 		ipcRenderer.on(channel, (event, ...args) => func(...args)),
 });

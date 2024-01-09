@@ -239,7 +239,7 @@ function bindEventListeners(notes) {
 				// Check if note was found
 				console.log(note);
 				// Pass the corresponding note data and id to the newWindow function
-				window.electron.newWindow(note);
+				window.electron.newWindow(note.id);
 			} else {
 				console.log(`Note with id ${noteId} not found.`);
 			}
@@ -247,7 +247,7 @@ function bindEventListeners(notes) {
 	});
 }
 
-// Make it so that once it saves on the note renderer it will call this function 
+// Make it so that once it saves on the note renderer it will call this function
 window.addEventListener("DOMContentLoaded", () => {
 	const notes = updateNotes();
 	bindEventListeners(notes);
