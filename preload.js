@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	toggleAlwaysOnTop: (noteId) => {
 		ipcRenderer.send("toggle-always-on-top", noteId);
 	},
+	showConfirmationDialog: (options) =>
+		ipcRenderer.invoke("show-confirmation-dialog", options),
 });
 
 ipcRenderer.on("note-data", (event, note) => {

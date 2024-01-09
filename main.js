@@ -255,12 +255,42 @@ const createNoteWindow = (note) => {
 		} else {
 			console.log("Note already exists in the store:", note);
 		}
+
+		// Throttle function to reduce the amount of calls when saving window configuration
+		// ! Need to go over how this works
+		const throttle = (func, limit) => {
+			let inThrottle;
+			return function () {
+				const args = arguments;
+				const context = this;
+				if (!inThrottle) {
+					func.apply(context, args);
+					inThrottle = true;
+					setTimeout(() => (inThrottle = false), limit);
+				}
+			};
+		};
+
+		// Function to save window bounds
+		const saveWindowBounds = () => {
+			const { x, y, width, height } = newNoteWindow.getBounds();
+			store.set(boundsKey, { x, y, width, height });
+			console.log(note + " - Window Bounds Saved");
+		};
+
+		// Throttled save function
+		const throttledSaveWindowBounds = throttle(saveWindowBounds, 1000); // Throttle for 1 second
+
+		// Save window bounds when resized
+		newNoteWindow.on("resize", throttledSaveWindowBounds);
+
+		// Save window bounds when moved
+		newNoteWindow.on("move", throttledSaveWindowBounds);
+
 		// Save window bounds when closed
 		// "close" is right before its going to close out
 		newNoteWindow.on("close", () => {
-			const { x, y, width, height } = newNoteWindow.getBounds();
-			store.set(boundsKey, { x, y, width, height });
-			// Need this as it will get confused when the note was exited out and trying to reopen it
+			saveWindowBounds();
 		});
 
 		// Remove the window from our map when it's closed
@@ -306,4 +336,10 @@ ipcMain.on("quit-note", (event, noteId) => {
 	store.set("currentNotes", newNotes);
 	console.log("deleted note " + noteId);
 	console.log(newNotes);
+});
+
+ipcMain.handle("show-confirmation-dialog", async (event, options) => {
+	console.log("launched");
+	const response = await dialog.showMessageBox(options);
+	return response.response; // This will return the index of the clicked button
 });

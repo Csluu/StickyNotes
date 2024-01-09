@@ -57,19 +57,33 @@ window.electron.on("note-data", (noteID) => {
 		saveUpdatedNote(note);
 	});
 
-	deleteButton.addEventListener("click", () => {
-		const notes = JSON.parse(localStorage.getItem("notes")) || [];
-		const noteId = note.id; // assuming 'note' is the current note
+	// Deleting note
+	deleteButton.addEventListener("click", async () => {
+		console.log("working");
+		const response = await window.electronAPI.showConfirmationDialog({
+			type: "question",
+			buttons: ["Yes", "No"],
+			defaultId: 1,
+			title: "Confirm Deletion",
+			message: "Are you sure you want to delete this note?",
+		});
 
-		// Remove the note with the provided id
-		const updatedNotes = notes.filter((note) => note.id !== noteId);
+		if (response === 0) {
+			// 'Yes' button has index 0
+			const notes = JSON.parse(localStorage.getItem("notes")) || [];
+			const noteId = note.id; // assuming 'note' is the current note
 
-		// Update local storage
-		localStorage.setItem("notes", JSON.stringify(updatedNotes));
-		window.electron.ipcRenderer.send("remove-note", noteId);
-		console.log("Deleted");
-		// You may also want to close the window or navigate away after deleting the note
-		window.electron.closeWindow();
+			// Remove the note with the provided id
+			const updatedNotes = notes.filter((note) => note.id !== noteId);
+
+			// Update local storage
+			localStorage.setItem("notes", JSON.stringify(updatedNotes));
+			// ! Check if I need this. It doesn't look like it
+			// window.electron.ipcRenderer.send("remove-note", noteId);
+			console.log("Deleted");
+			// Close the window or navigate away after deleting the note
+			window.electron.closeWindow();
+		}
 	});
 
 	// Add event listeners to each color button
@@ -112,6 +126,7 @@ window.electron.on("note-data", (noteID) => {
 			notes.push(updatedNote);
 		}
 		localStorage.setItem("notes", JSON.stringify(notes));
+		// ! Need to send to main to update the main menu window
 	}
 
 	function toggleTransparent(dropDown, menu, noteID) {
