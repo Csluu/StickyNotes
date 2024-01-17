@@ -20,7 +20,7 @@ let mainWindow;
 // Getting the current note value or setting it as empty
 let currentNotes = store.get("currentNotes") || [];
 // For dev purposes to clear currentNote data
-// currentNotes = store.set("currentNotes", []);
+//currentNotes = store.set("currentNotes", []);
 const openNotes = new Map();
 
 contextMenu({
@@ -225,6 +225,7 @@ const createNoteWindow = (note) => {
 			},
 		});
 
+		// ! NEED TO CHECK THIS FOR NEW NOTES
 		// Load, send data, etc...
 		newNoteWindow.loadFile(path.join(__dirname, "./Renderer/html/note.html"));
 		newNoteWindow.webContents.on("did-finish-load", () => {
@@ -336,6 +337,12 @@ ipcMain.on("quit-note", (event, noteId) => {
 	store.set("currentNotes", newNotes);
 	console.log("deleted note " + noteId);
 	console.log(newNotes);
+});
+
+ipcMain.on("note-modified", (event, args) => {
+	// Send a message to the window which needs to be updated
+	// Assume 'notesWindow' is the reference to the window that shows the notes list
+	mainWindow.webContents.send("update-notes-list");
 });
 
 ipcMain.handle("show-confirmation-dialog", async (event, options) => {

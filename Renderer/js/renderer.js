@@ -55,7 +55,10 @@ function updateNotes() {
 	noteCardsContainer.innerHTML = "";
 
 	// Load all notes from local storage
-	const notes = JSON.parse(localStorage.getItem("notes")) || [];
+	// Checks to see if there is anything in local storage
+	const notesString = localStorage.getItem("notes");
+	// If there isn't then set it to null
+	const notes = notesString ? JSON.parse(notesString) : [];
 
 	const colorMap = {
 		red: "bg-red-500",
@@ -251,47 +254,21 @@ function bindEventListeners(notes) {
 window.addEventListener("DOMContentLoaded", () => {
 	const notes = updateNotes();
 	bindEventListeners(notes);
+});
 
-	// Update notes every 5 seconds
-	// setInterval(() => {
-	// 	const newNotes = updateNotes();
-	// 	bindEventListeners(newNotes);
-	// }, 5000);
+// In the process displaying the list of notes
+electron.onNotesListUpdate(() => {
+	// Update the display of notes
+	const newNotes = updateNotes();
+	bindEventListeners(newNotes);
 });
 
 // Attach an event listener to the new note button
 const newNoteButton = document.querySelector(".newNoteButton");
 newNoteButton.addEventListener("click", () => {
 	console.log("added");
-	note = {
-		id: generateRandomId(),
-		title: "Note",
-		text: "",
-		lastModified: getFormattedDate(),
-		color: "bg-green-500",
-	};
-	window.electron.newWindow(note);
+	(note = generateRandomId()), window.electron.newWindow(note);
 });
-
-// Function to get current date in Year/Month/Day format
-function getFormattedDate() {
-	const date = new Date();
-	const year = date.getFullYear();
-	let month = date.getMonth() + 1; // Months are zero-based
-	let day = date.getDate();
-	let hours = date.getHours();
-	let minutes = date.getMinutes();
-	let seconds = date.getSeconds();
-
-	// Pad month, day, hours, minutes and seconds with leading zeros if necessary
-	month = month < 10 ? "0" + month : month;
-	day = day < 10 ? "0" + day : day;
-	hours = hours < 10 ? "0" + hours : hours;
-	minutes = minutes < 10 ? "0" + minutes : minutes;
-	seconds = seconds < 10 ? "0" + seconds : seconds;
-
-	return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
-}
 
 function generateRandomId() {
 	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -303,7 +280,7 @@ function generateRandomId() {
 
 function formatDate(isoDateString) {
 	const date = new Date(isoDateString);
-	const options = { year: "numeric", month: "long", day: "numeric" };
+	const options = { year: "numeric", month: "short", day: "numeric" };
 	return date.toLocaleDateString("en-US", options);
 }
 

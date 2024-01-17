@@ -12,16 +12,26 @@ const colorClasses = [
 ];
 
 // Fetch the note passed to this window
-// ! Will have to redo this
-// ! The implementation is not as good as it should be I should be passing only the ID from the main menu to the note window then grabbing and loading the information from storage
-// ! Passing the note ID and the content makes it harder to implement features on top of
 window.electron.on("note-data", (noteID) => {
 	// const noteTitle = document.querySelector("#noteTitle");
 	// const noteText = document.querySelector("#noteText");
-	let notes = JSON.parse(localStorage.getItem("notes")) || [];
-	const note = notes.find((n) => n.id === noteID);
+	// Getting Local Storage
+	// Checks to see if there is anything in local storage
+	const notesString = localStorage.getItem("notes");
+	// If there isn't then set it to null
+	const notes = notesString ? JSON.parse(notesString) : [];
 
+	// Trying to find the note in local storage
+	let note = notes.find((n) => n.id === noteID);
+
+	// If this is a brand new note
+	if (!note) {
+		note = { id: noteID, title: "Note", text: "", color: "bg-green-500" }; // default values
+		console.log(note);
+	}
 	// Using closure to pass the ID into the quitnote function
+	// ! New note error is happening here.
+	// * How do we make it so that new notes are not auto saved in the electron store
 	document
 		.getElementById("noteQuit")
 		.addEventListener("click", quitNoteAndCloseWindow(note.id));
@@ -70,7 +80,10 @@ window.electron.on("note-data", (noteID) => {
 
 		if (response === 0) {
 			// 'Yes' button has index 0
-			const notes = JSON.parse(localStorage.getItem("notes")) || [];
+			// Get the item from localStorage and check if it exists
+			const notesString = localStorage.getItem("notes");
+			// If notesString is not null, parse it. Otherwise, default to an empty array
+			const notes = notesString ? JSON.parse(notesString) : [];
 			const noteId = note.id; // assuming 'note' is the current note
 
 			// Remove the note with the provided id
@@ -80,6 +93,8 @@ window.electron.on("note-data", (noteID) => {
 			localStorage.setItem("notes", JSON.stringify(updatedNotes));
 			// ! Check if I need this. It doesn't look like it
 			// window.electron.ipcRenderer.send("remove-note", noteId);
+			window.electron.quitNote(noteId);
+
 			console.log("Deleted");
 			// Close the window or navigate away after deleting the note
 			window.electron.closeWindow();
@@ -117,7 +132,10 @@ window.electron.on("note-data", (noteID) => {
 	function saveUpdatedNote(updatedNote) {
 		// * Need to grab the latest note at it could change when having another note open!!!!!!!
 		// * for example if this note data was still on index 65 and another was on 70 making changes on index 65 would save the list only up to 65
-		const notes = JSON.parse(localStorage.getItem("notes")) || [];
+		// Get the item from localStorage and check if it exists
+		const notesString = localStorage.getItem("notes");
+		// If notesString is not null, parse it. Otherwise, default to an empty array
+		const notes = notesString ? JSON.parse(notesString) : [];
 		const noteIndex = notes.findIndex((note) => note.id === updatedNote.id);
 		if (noteIndex !== -1) {
 			notes[noteIndex] = updatedNote;
@@ -126,7 +144,7 @@ window.electron.on("note-data", (noteID) => {
 			notes.push(updatedNote);
 		}
 		localStorage.setItem("notes", JSON.stringify(notes));
-		// ! Need to send to main to update the main menu window
+		electron.sendNoteModified();
 	}
 
 	function toggleTransparent(dropDown, menu, noteID) {
@@ -149,8 +167,15 @@ window.electron.on("note-data", (noteID) => {
 
 // Function to get last modification time of a note
 function getLastModifiedTime(id) {
-	const notes = JSON.parse(localStorage.getItem("notes"));
+	// Get the item from localStorage and check if it exists
+	const notesString = localStorage.getItem("notes");
+	// If notesString is not null, parse it. Otherwise, default to an empty array
+	const notes = notesString ? JSON.parse(notesString) : [];
+
+	// Find the note with the given id
 	const note = notes.find((note) => note.id === id);
+
+	// Return the lastModified time if it exists, else return null
 	if (note && note.lastModified) {
 		return note.lastModified;
 	} else {
