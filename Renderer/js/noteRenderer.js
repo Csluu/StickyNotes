@@ -299,13 +299,7 @@ toggleLock();
 const newNoteButton = document.querySelector(".newNoteButton");
 newNoteButton.addEventListener("click", () => {
 	console.log("added");
-	note = {
-		id: generateRandomId(),
-		title: "Note",
-		text: "",
-		lastModified: getFormattedDate(),
-	};
-	window.electron.newWindow(note);
+	(note = generateRandomId()), window.electron.newWindow(note);
 });
 
 ["color-drop-down", "menu-1"].forEach((buttonId) => {

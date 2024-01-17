@@ -19,8 +19,8 @@ const store = new Store();
 let mainWindow;
 // Getting the current note value or setting it as empty
 let currentNotes = store.get("currentNotes") || [];
-// For dev purposes to clear currentNote data
-//currentNotes = store.set("currentNotes", []);
+// * For dev purposes to clear currentNote data
+// currentNotes = store.set("currentNotes", []);
 const openNotes = new Map();
 
 contextMenu({
