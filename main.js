@@ -341,7 +341,6 @@ ipcMain.on("quit-note", (event, noteId) => {
 
 ipcMain.on("note-modified", (event, args) => {
 	// Send a message to the window which needs to be updated
-	// Assume 'notesWindow' is the reference to the window that shows the notes list
 	mainWindow.webContents.send("update-notes-list");
 });
 

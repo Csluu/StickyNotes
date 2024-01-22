@@ -94,7 +94,8 @@ window.electron.on("note-data", (noteID) => {
 			// ! Check if I need this. It doesn't look like it
 			// window.electron.ipcRenderer.send("remove-note", noteId);
 			window.electron.quitNote(noteId);
-
+			// Send to main window to update the notes list
+			electron.sendNoteModified();
 			console.log("Deleted");
 			// Close the window or navigate away after deleting the note
 			window.electron.closeWindow();

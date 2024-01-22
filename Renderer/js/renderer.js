@@ -254,6 +254,14 @@ function bindEventListeners(notes) {
 window.addEventListener("DOMContentLoaded", () => {
 	const notes = updateNotes();
 	bindEventListeners(notes);
+
+	// // Updates the notes when theres something in the search input
+	const searchInput = document.querySelector('input[type="text"]');
+	searchInput.addEventListener("input", function () {
+		// Calls updateNotes() and makes sure the event listeners are binded correctly as just calling updateNotes() might give us errors
+		const newNotes = updateNotes();
+		bindEventListeners(newNotes);
+	});
 });
 
 // In the process displaying the list of notes
