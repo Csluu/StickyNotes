@@ -1,0 +1,2 @@
+export const MAIN_WINDOW = { WIDTH: 430, HEIGHT: 625 };
+export const NOTE_WINDOW = { WIDTH: 500, HEIGHT: 550, MIN_WIDTH: 425, MIN_HEIGHT: 350 };

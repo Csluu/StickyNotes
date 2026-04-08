@@ -1,0 +1,223 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Transparent window — hide scrollbars */
+html, body {
+  background-color: transparent !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  background-color: transparent !important;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  display: none;               /* Chrome/Safari/Opera */
+}
+
+/* But preserve explicit backgrounds on elements that have them */
+.note-card, .card, .drop-menu, .color-picker-dropdown {
+  background-color: inherit;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Body ─────────────────────────────────────────────────────────────────── */
+.body {
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+  justify-content: center;
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.yes-drag {
+  -webkit-app-region: drag;
+}
+
+/* ── Container ────────────────────────────────────────────────────────────── */
+.container {
+  display: flex;
+  height: fit-content;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 1.5rem;
+  border-width: 1px;
+  border-color: black;
+  background-color: rgba(25, 25, 25, 0.75); /* clear-dark-gray */
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-bottom: 2rem;
+  box-shadow: 0 3px 10px 2px rgba(0, 0, 0, 0.5), 0 5px 15px 2px rgba(0, 0, 0, 0.5), inset 0 0 0 2px rgba(87,88,89,0.66), inset 0 0 5px rgba(87,88,89,0.66); /* shadow-border */
+}
+
+/* ── Swim Lane ────────────────────────────────────────────────────────────── */
+.swim-lane {
+  -webkit-app-region: no-drag;
+  display: flex;
+  height: fit-content;
+  min-height: 100px;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+/* ── Card ─────────────────────────────────────────────────────────────────── */
+.card {
+  display: flex;
+  height: auto;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  place-items: start;
+  justify-content: start;
+  border-top-width: 1px;
+  border-color: rgb(75 85 99); /* gray-600 */
+  background-color: rgba(32, 40, 51, 0.8); /* block-gray */
+  padding-bottom: 1.5rem;
+  color: rgb(229 231 235); /* gray-200 */
+  box-shadow: 0 -1px 0px 0px rgba(2, 6, 23, 1), 0 4px 6px -1px rgba(2, 6, 23, 1), 0 2px 4px -1px rgba(2, 6, 23, 1); /* shadow-highLight */
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: all 0.075s ease-in-out;
+  outline: none;
+}
+
+.card:focus {
+  outline: none;
+}
+
+.card-text {
+  color: #e5e7eb;
+}
+
+/* ── Drop Menu ────────────────────────────────────────────────────────────── */
+.drop-menu {
+  z-index: 10;
+  margin-top: 0\.5rem;
+  width: 9rem;
+  border-radius: 0.75rem;
+  border: 1px solid black;
+  background-color: rgba(36, 36, 36, 1);
+  box-shadow: 0 3px 10px 2px rgba(0, 0, 0, 0.5), 0 5px 15px 2px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(87,88,89,0.66), inset 0 0 3px rgba(87,88,89,0.66);
+  min-width: 160px;
+}
+
+.drop-menu ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.drop-menu li {
+  width: 100%;
+}
+
+.drop-menu li button,
+.drop-menu li > div[role="button"] {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  opacity: 0.5;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.drop-menu li button:hover,
+.drop-menu li > div[role="button"]:hover {
+  opacity: 1;
+}
+
+.drop-menu li:not(:last-child) {
+  border-bottom: 1px solid rgb(55, 55, 55);
+}
+
+.newNoteButton {
+  opacity: 0.5;
+  transition: all 0.15s ease-in-out;
+}
+
+.newNoteButton:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ── Note Card ────────────────────────────────────────────────────────────────── */
+.note-card {
+  background-color: rgba(25, 25, 25, 0.75);
+  border-radius: 1.5rem;
+  border: 1px solid black;
+  box-shadow:
+    0 3px 10px 2px rgba(0, 0, 0, 0.5),
+    0 5px 15px 2px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 2px rgba(87, 88, 89, 0.66),
+    inset 0 0 5px rgba(87, 88, 89, 0.5);
+}
+
+/* Placeholder for editable text area */
+[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+/* Markdown rendered content — match edit mode color */
+.prose {
+  color: #e5e7eb;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: #e5e7eb;
+}
+
+.prose p, .prose li, .prose td {
+  color: #e5e7eb;
+}
+
+.prose strong {
+  color: #f3f4f6;
+}
+
+.prose a {
+  color: #60a5fa;
+}
+
+.prose code {
+  color: #d1d5db;
+  background: rgba(255,255,255,0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.prose pre {
+  background: rgba(0,0,0,0.3);
+}
+
+.prose blockquote {
+  border-left-color: #4b5563;
+  color: #9ca3af;
+}
