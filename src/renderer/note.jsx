@@ -8,7 +8,7 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <NoteWindow />
-  </React.StrictMode>
+	<React.StrictMode>
+		<NoteWindow />
+	</React.StrictMode>,
 );
